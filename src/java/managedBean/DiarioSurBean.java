@@ -26,6 +26,26 @@ public class DiarioSurBean implements Serializable {
     /**
      * Creates a new instance of diarioSurBean
      */
+    
+    private Usuario usuario;
+    private Evento evento;
+
+    public Evento getEvento() {
+        return evento;
+    }
+
+    public void setEvento(Evento evento) {
+        this.evento = evento;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
     public DiarioSurBean() {
     }
     
@@ -50,11 +70,37 @@ public class DiarioSurBean implements Serializable {
         
         if(r.getStatus() == 200){
             GenericType<List<Usuario>> genericType = new GenericType<List<Usuario>>(){};
-            List<Usuario> user = r.readEntity(genericType);
+            List<Usuario> usuarios = r.readEntity(genericType);
             
-            return user;
+            return usuarios;
         }
         
         return null;
+    }
+    
+    //metodos a implementar cuando dani meta las funciones del servidor, pero al menos está la estructura
+    public List<Evento> mostrarTodosLosEventosRevisados(){
+        DiarioSur_Client cliente = new DiarioSur_Client("evento");
+        //Response r = cliente.findAll_XML(Response.class); aqui iria la funcion correcta, al final ponemos solo un service con todo, o un service por cada clase?
+        
+        if(r.getStatus() == 200){
+            GenericType<List<Evento>> genericType = new GenericType<List<Evento>>(){};
+            List<Evento> eventos = r.readEntity(genericType);
+            
+            return eventos;
+        }
+        
+        return null;
+    }
+    
+    public String volver()
+    {
+        return "index";
+    }
+    
+    public String verEvento(Evento e)
+    {
+        evento = e;
+        return "evento";
     }
 }
