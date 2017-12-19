@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    
+    <f:loadBundle basename="managedBean.var_globales" var="varg"/>
+    
+    <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />		
+
+        <title><h:outputText value="#{varg.app_title}" /></title>
+    </f:facet>
+
+ 
+        <!-- favicon -->
+        <link rel="icon" type="image/x-icon" href="/resources/images/favicon.ico"/>
+
+        
+        <!-- Bootstrap CSS -->
+        <h:outputStylesheet name="twitter-bootstrap/css/bootstrap.min.css"/>
+        <h:outputStylesheet name="css/style.css"/>
+        <link rel="stylesheet" type="text/css" href="resources/css/font-awesome.min.css"/>
+        
+        <!-- JQuery -->
+        <script src="resources/js/jquery.min.js"></script>
+        <h:outputScript name="twitter-bootstrap/js/bootstrap.js" />
+        
+    
+        <ui:insert name="script-individual">
+        </ui:insert>
+</html>

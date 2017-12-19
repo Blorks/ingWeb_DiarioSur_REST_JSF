@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="plantilla.xhtml">
+
+    <ui:define name="contenido">
+
+        <div class="container">
+            <div class="row white-evento">
+                <!-- HEADER -->
+                <div class="evento-header">
+                    <img style="width:100%" src="http://www.limontasport.com/wp-content/uploads/2016/03/limonta-sport-slider-1-2-1800x720.jpg" />
+                    <div class="triangulo"></div>
+                    <div class="profile">
+                        <img class="photo-author img-circle" src="resources/images/perfil/riverftv@gmail.com.jpg" />
+                        <span class="name-author">por #{agendaManagedBean.autorEvento(agendaManagedBean.mostrar_evento.usuarioId)}</span>
+                    </div>
+                    <h5 class="evento-sub-title">DEPORTES</h5>
+                    <h2 class="evento-title">#{agendaManagedBean.mostrar_evento.titulo}</h2>
+                </div>
+
+                <!-- INFO -->
+                <div class="row row-evento">
+                    <div class="col-xs-12">
+                        <h4 style="line-height: 25px;">#{agendaManagedBean.mostrar_evento.subtitulo}</h4>
+                    </div>
+                </div>
+                <div class="row row-eq-height row-evento" style="padding-right:15px">
+                    <div class="col-md-8 text">
+                        <p>#{agendaManagedBean.mostrar_evento.descripcion}</p>
+                    </div>
+
+                    <!--    
+                                                    Contenido col 4 para sidebar
+                    -->
+                    <div class="col-md-4">
+                        <div class="container-fluid">
+
+                            <div class="row side">
+                                <small>
+                                    <div class="statistics">
+                                        <span class="label label-default">Visitas 2550</span>
+                                        <span class="label label-default">Comentarios 15</span>
+                                        <span class="label label-default">Compartido 50 veces</span>
+                                        <span class="label label-default">Me gusta 20</span>
+                                    </div>
+                                </small>
+                            </div>
+
+                            <ui:insert name="ult-noticias" >
+                                <ui:include src="/resources/template/ultNoticias.xhtml" />
+                            </ui:insert>  
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>

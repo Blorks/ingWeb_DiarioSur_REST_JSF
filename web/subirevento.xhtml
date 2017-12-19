@@ -1,0 +1,423 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="plantilla.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:t="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:define name="contenido">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <section>
+                        <div class="wizard">
+                            <div class="wizard-inner">
+                                <div class="connecting-line"></div>
+                                <ul class="nav nav-tabs" role="tablist">
+
+                                    <li role="presentation" class="active">
+                                        <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Paso 1">
+                                            <span class="round-tab">
+                                                <i class="glyphicon glyphicon-pencil"></i>
+                                            </span>
+                                        </a>
+                                    </li>
+
+                                    <li role="presentation" class="disabled">
+                                        <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Paso 2">
+                                            <span class="round-tab">
+                                                <i class="glyphicon glyphicon-calendar"></i>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li role="presentation" class="disabled">
+                                        <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Paso 3">
+                                            <span class="round-tab">
+                                                <i class="glyphicon glyphicon-picture"></i>
+                                            </span>
+                                        </a>
+                                    </li>
+
+                                    <li role="presentation" class="disabled">
+                                        <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Verifica los datos">
+                                            <span class="round-tab">
+                                                <i class="glyphicon glyphicon-ok"></i>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <f:view>
+                                <h:form>
+                                    <div class="tab-content" style="margin: 25px;">
+                                        <div class="tab-pane active" role="tabpanel" id="step1">
+                                            <div class="step33">
+                                                <h5><strong>Crear evento</strong></h5>
+                                                <hr/>
+                                                <div class="row mar_ned">
+
+                                                </div>
+                                                <div class="row mar_ned">
+                                                    <div class="col-md-4">
+                                                        <p align="right"><stong>Título</stong></p>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <h:inputText class="form-control" id="ev_titulo" value="#{agendaManagedBean.evento.titulo}" required="true"/>
+                                                    </div>
+                                                </div>
+                                                <div class="row mar_ned">
+                                                    <div class="col-md-4">
+                                                        <p align="right"><stong>Subiítulo</stong></p>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <h:inputText class="form-control" id="ev_subtitulo" value="#{agendaManagedBean.evento.subtitulo}" required="true"/>
+                                                    </div>
+                                                </div>
+                                                <div class="row mar_ned">
+                                                    <div class="col-md-4">
+                                                        <p align="right"><stong>Contenido</stong></p>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <h:inputTextarea class="form-control input-sm" id="ev_descripcion" rows="7" value="#{agendaManagedBean.evento.descripcion}" required="true"/>
+                                                    </div>
+                                                </div>
+                                                <div class="row mar_ned">
+                                                    <div class="col-md-4">
+                                                        <p align="right"><stong>Precio</stong></p>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <h:inputText class="form-control input-sm" id="ev_precio" value="#{agendaManagedBean.evento.precio}" required="true"/>
+                                                    </div>
+                                                </div>
+                                                <div class="row mar_ned">
+                                                    <div class="col-md-4 col-xs-3">
+                                                        <!-- -->
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-xs-6 wdth">
+                                                                <!-- -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mar_ned">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <ul class="list-inline pull-right">
+                                                <li><button type="button" class="btn btn-primary next-step">Guardar y continuar</button></li>
+                                            </ul>
+                                        </div>
+                                        <div class="tab-pane" role="tabpanel" id="step2">
+
+                                            <div class="step33">
+                                                <h5><strong>Fecha del evento</strong></h5>
+                                                <hr/>
+                                                <div class="row mar_ned">
+
+                                                </div>
+                                                <div class="row mar_ned">
+                                                    <div class="col-md-4 col-xs-3">
+                                                        <p align="right"><stong>Un solo día</stong></p>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <h:inputText class="form-control" id="diaunico" t:type="date" value="#{agendaManagedBean.fecha.dia}">
+                                                                <f:convertDateTime pattern="dd-MM-yyyy"/>  
+                                                            </h:inputText>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mar_ned">
+                                                    <div class="col-md-4">
+                                                        <p align="right"><stong>Desde - hasta</stong></p>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="row">
+                                                            <div class="form-inline">
+                                                                <h:inputText class="form-control" t:type="date" id="ev_fecha_desde" value="#{agendaManagedBean.fecha.inicio}">
+                                                                    <f:convertDateTime pattern="dd-MM-yyyy"/>  
+                                                                </h:inputText>
+                                                                <h:inputText class="form-control" style="margin-left: 25px" t:type="date" id="ev_fecha_hasta" value="#{agendaManagedBean.fecha.fin}">
+                                                                    <f:convertDateTime pattern="dd-MM-yyyy"/>  
+                                                                </h:inputText>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mar_ned">
+                                                    <div class="col-md-4">
+                                                        <p align="right"><stong>Días concretos</stong></p>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <h:inputText id="ev_lista_fechas" class="form-control" t:type="date" value="#{agendaManagedBean.fecha.listaDias}">
+                                                                <f:convertDateTime pattern="dd-MM-yyyy"/>  
+                                                            </h:inputText>
+                                                            <div class="col-md-6 col-xs-6 wdth">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mar_ned">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <ul class="list-inline pull-right">
+                                                <li><button type="button" class="btn btn-default prev-step">Atrás</button></li>
+                                                <li><button type="button" class="btn btn-primary next-step">Guardar y continuar</button></li>
+                                            </ul>
+                                        </div>
+                                        <div class="tab-pane" role="tabpanel" id="step3">
+                                            <div class="step33">
+                                                <h5><strong>Subir archivo</strong></h5>
+                                                <hr/>
+                                                <div class="row mar_ned">
+
+                                                </div>
+                                                <div class="row mar_ned">
+                                                    <div class="col-md-4">
+
+                                                    </div>
+                                                    <div class="col-md-8 col-xs-9">
+                                                        <div class="row">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mar_ned">
+                                                    <div class="col-md-12">
+
+                                                        <!-- TODO pre visualizar la img -->
+                                                        <div class="col-md-4">
+                                                            <div class="image-preview-div"></div>
+                                                        </div>
+                                                        <div class="col-md-8">                                                  
+                                                            <!-- image-preview-filename input [CUT FROM HERE]-->
+                                                            <div class="input-group image-preview">
+                                                                <input type="text" class="form-control image-preview-filename" disabled="disabled" /> <!-- don't give a name === doesn't send on POST/GET -->
+                                                                <span class="input-group-btn">
+                                                                    <!-- image-preview-clear button -->
+                                                                    <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
+                                                                        <span class="glyphicon glyphicon-remove"></span> Limpiar
+                                                                    </button>
+                                                                    <!-- image-preview-input -->
+                                                                    <div class="btn btn-default image-preview-input">
+                                                                        <span class="glyphicon glyphicon-folder-open"></span>
+                                                                        <span class="image-preview-input-title">Subir archivo</span>
+                                                                        <input type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/> <!-- rename it -->
+                                                                    </div>
+                                                                </span>
+                                                            </div><!-- /input-group image-preview [TO HERE]--> 
+                                                        </div>
+                                                        <!-- /TODO -->
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="row mar_ned">
+
+                                                </div>
+                                            </div>
+                                            <ul class="list-inline pull-right">
+                                                <li><button type="button" class="btn btn-default prev-step">Atrás</button></li>
+                                                <li><button type="button" class="btn btn-default next-step go-resume">Saltar</button></li>
+                                                <li><button type="button" class="btn btn-primary btn-info-full next-step go-resume">Guardar y continuar</button></li>
+                                            </ul>
+                                        </div>
+                                        <div class="tab-pane" role="tabpanel" id="complete">
+                                            <div class="step33">
+                                                <h5><strong>Crear evento</strong></h5>
+                                                <hr/>
+                                                <div class="row mar_ned">
+                                                    <div class="col-md-4 col-xs-3">
+                                                        <!-- -->
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-xs-6 wdth" style="min-width: 400px; ">
+                                                                <p id="mostrar_ev_titulo"></p>
+                                                                <p id="mostrar_ev_subtitulo"></p>
+                                                                <p id="mostrar_ev_descripcion"></p>
+                                                                <p id="mostrar_ev_precio"></p>
+                                                                <p id="mostrar_diaunico"></p>
+                                                                <p><span id="mostrar_ev_fecha_desde"></span> - <span id="mostrar_ev_fecha_hasta"></span></p>
+                                                                <p id="mostrar_ev_lista_fechas"></p>
+                                                                <h:commandButton class="btn btn-primary btn-block" value="Crear evento" action="#{agendaManagedBean.nuevoEvento()}" /> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mar_ned">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </h:form>
+                            </f:view>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+    <ui:define name="script-individual">
+        <script src="resources/js/fileUpload.js"></script>
+        <script>
+            $(document).ready(function () {
+                $(".go-resume").click(function() {
+                    $("#mostrar_ev_titulo").html($('input[id$="ev_titulo"]').val());
+                    $("#mostrar_ev_subtitulo").html($('input[id$="ev_subtitulo"]').val());
+                    $("#mostrar_ev_descripcion").html($('textarea[id$="ev_descripcion"]').val());
+                    $("#mostrar_ev_precio").html($('input[id$="ev_precio"]').val() + "€");
+                    
+                    $("#mostrar_diaunico").html($('input[id$="diaunico"]').val());
+                    $("#mostrar_ev_fecha_desde").html($('input[id$="ev_fecha_desde"]').val());
+                    $("#mostrar_ev_fecha_hasta").html($('input[id$="ev_fecha_hasta"]').val());
+                    $("#mostrar_ev_lista_fechas").html($('input[id$="ev_lista_fechas"]').val());
+                });
+                
+                //Initialize tooltips
+                $('.nav-tabs > li a[title]').tooltip();
+
+                //Wizard
+                $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+
+                    var $target = $(e.target);
+
+                    if ($target.parent().hasClass('disabled')) {
+                        return false;
+                    }
+                });
+
+                $(".next-step").click(function (e) {
+
+                    var $active = $('.wizard .nav-tabs li.active');
+                    $active.next().removeClass('disabled');
+                    nextTab($active);
+
+                });
+                $(".prev-step").click(function (e) {
+
+                    var $active = $('.wizard .nav-tabs li.active');
+                    prevTab($active);
+
+                });
+
+                $(document).on('click', '#close-preview', function () {
+
+                    // Hover befor close the preview
+                    $('.image-preview').hover(
+                            function () {
+                                //$('.image-preview').popover('show');
+                            },
+                            function () {
+                                //$('.image-preview').popover('hide');
+                            }
+                    );
+                });
+
+                $(function () {
+                    // Create the close button
+                    var closebtn = $('<button/>', {
+                        type: "button",
+                        text: 'x',
+                        id: 'close-preview',
+                        style: 'font-size: initial;',
+                    });
+                    closebtn.attr("class", "close pull-right");
+                    // Set the popover default content
+                    $('.image-preview').popover({
+                        trigger: 'manual',
+                        html: true,
+                        title: "<strong>Preview</strong>" + $(closebtn)[0].outerHTML,
+                        content: "There's no image",
+                        placement: 'bottom'
+                    });
+                    // loading
+                    $('.image-preview-input').click(function () {
+                        $('.image-preview-div').html('<p class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i></p>');
+                    });
+                    // Clear event
+                    $('.image-preview-clear').click(function () {
+                        //$('.image-preview').attr("data-content","").popover('hide');
+                        $(".image-preview-div").html("");
+                        $('.image-preview-filename').val("");
+                        $('.image-preview-clear').hide();
+                        $('.image-preview-input input:file').val("");
+                        $(".image-preview-input-title").text("Subir archivo");
+                    });
+                    // Create the preview image
+                    $(".image-preview-input input:file").change(function () {
+                        var img = $('<img/>', {
+                            id: 'dynamic',
+                            width: 250,
+                            height: 200
+                        });
+                        var file = this.files[0];
+                        var reader = new FileReader();
+                        // Set preview image into the popover data-content
+                        reader.onload = function (e) {
+                            $(".image-preview-input-title").text("Cambiar");
+                            $(".image-preview-clear").show();
+                            $(".image-preview-filename").val(file.name);
+                            img.attr('src', e.target.result);
+                            //$(".image-preview").attr("data-content",$(img)[0].outerHTML).popover("show");
+                            $('.image-preview-div').html((img)[0].outerHTML);
+                        }
+                        reader.readAsDataURL(file);
+                    });
+                });
+
+            });
+
+            function nextTab(elem) {
+                $(elem).next().find('a[data-toggle="tab"]').click();
+            }
+            function prevTab(elem) {
+                $(elem).prev().find('a[data-toggle="tab"]').click();
+            }
+
+
+            //according menu
+
+            $(document).ready(function ()
+            {
+                //Add Inactive Class To All Accordion Headers
+                $('.accordion-header').toggleClass('inactive-header');
+
+                //Set The Accordion Content Width
+                var contentwidth = $('.accordion-header').width();
+                $('.accordion-content').css({});
+
+                //Open The First Accordion Section When Page Loads
+                $('.accordion-header').first().toggleClass('active-header').toggleClass('inactive-header');
+                $('.accordion-content').first().slideDown().toggleClass('open-content');
+
+                // The Accordion Effect
+                $('.accordion-header').click(function () {
+                    if ($(this).is('.inactive-header')) {
+                        $('.active-header').toggleClass('active-header').toggleClass('inactive-header').next().slideToggle().toggleClass('open-content');
+                        $(this).toggleClass('active-header').toggleClass('inactive-header');
+                        $(this).next().slideToggle().toggleClass('open-content');
+                    } else {
+                        $(this).toggleClass('active-header').toggleClass('inactive-header');
+                        $(this).next().slideToggle().toggleClass('open-content');
+                    }
+                });
+
+                return false;
+            });
+        </script>
+    </ui:define>
+
+</ui:composition>
