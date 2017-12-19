@@ -1,120 +1,129 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        <f:view>
-            <h:form>
-                <h1><h:outputText value="List"/></h1>
-                <h:dataTable value="#{diarioSurBean.mostrarTodosLosEventos()}" var="item">
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Titulo"/>
-                        </f:facet>
-                        <h:outputText value="#{item.titulo}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Subtitulo"/>
-                        </f:facet>
-                        <h:outputText value="#{item.subtitulo}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Descripcion"/>
-                        </f:facet>
-                        <h:outputText value="#{item.descripcion}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Id"/>
-                        </f:facet>
-                        <h:outputText value="#{item.id}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Direccionfisica"/>
-                        </f:facet>
-                        <h:outputText value="#{item.direccionfisica}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Precio"/>
-                        </f:facet>
-                        <h:outputText value="#{item.precio}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Estarevisado"/>
-                        </f:facet>
-                        <h:outputText value="#{item.estarevisado}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="DateevId"/>
-                        </f:facet>
-                        <h:outputText value="#{item.dateevId}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="UsuarioId"/>
-                        </f:facet>
-                        <h:outputText value="#{item.usuarioId}"/>
-                    </h:column>
-                </h:dataTable>
-            </h:form>
-        </f:view>
 
-        <f:view>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="plantilla.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="script-individual">
+        <script src="resources/js/starrr.js"></script>
+    </ui:define>
+    <ui:define name="contenido">
+
+        <!--    
+                                        Contenido
+        -->
+
+        <div class="container">
+            <div class="container-fluid">
+                <div class="row">
+                    <!--    
+                                                    Publicidad
+                    -->
+                    <div class="col-md-12">
+                        <img src="http://via.placeholder.com/850x350?text=Publicidad" width="100%"/>
+                    </div>
+                </div>
+                <!--    
+                                                Submenu Filtrado
+                -->
+                <nav class="navbar navbar-default" role="navigation" style="margin-top: 20px">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Filtrado</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">Eventos recomendados</a>
+                    </div>
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Filtrar <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Ordenado <i class="glyphicon glyphicon-sort-by-alphabet pull-right"></i></a></li>
+                                    <li><a href="#">Fecha <i class="glyphicon glyphicon-sort pull-right"></i></a></li>
+                                    <li><a href="#">Dirección</a></li>
+                                    <li><a href="#">Precio <i class="glyphicon glyphicon-sort-by-attributes pull-right"></i></a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Keywords</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <div class="col-sm-3 col-md-3 pull-right">
+                            <form class="navbar-form" role="search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Buscar" name="q"/>
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!-- /.navbar-collapse -->
+                </nav>
 
 
-            <h:form>
-                <h1><h:outputText value="List"/></h1>
-                <h:dataTable value="#{diarioSurBean.mostrarTodosLosUsuario()}" var="item">
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Id"/>
-                        </f:facet>
-                        <h:outputText value="#{item.id}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Nombre"/>
-                        </f:facet>
-                        <h:outputText value="#{item.nombre}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Apellidos"/>
-                        </f:facet>
-                        <h:outputText value="#{item.apellidos}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Email"/>
-                        </f:facet>
-                        <h:outputText value="#{item.email}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Hashpassword"/>
-                        </f:facet>
-                        <h:outputText value="#{item.hashpassword}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="Rol"/>
-                        </f:facet>
-                        <h:outputText value="#{item.rol}"/>
-                    </h:column>
-                </h:dataTable>
-            </h:form>
-        </f:view>
+                <div class="row" style="background-color: #FFF">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <!--    
+                                                            Contenido col 8 para eventos
+                            -->
+                            <div class="col-md-8">
+                                <div class="container-fluid">
+                                    <div class="row transparent">
 
-    </h:body>
-</html>
 
+                                        <f:view>
+                                            <h:form>
+                                                <ui:repeat value="#{diarioSurBean.mostrarTodosLosEventosRevisados()}" var="ev"  varStatus="estado">  
+                                                    <div class="col-md-6">
+                                                        <div class="tuyin first">
+                                                            <span class="title">
+                                                                <h:commandButton class="btn btn-link title" value="#{ev.titulo}" action="#{diarioSurBean.verEvento(ev.id)}"/> 
+                                                            </span>
+                                                            <div class="plan-name">#{ev.subtitulo}</div>
+                                                            <div class="text">
+                                                                <p>#{ev.descripcion}</p>
+                                                                 
+                                                                <div id="stars-existing" class="starrr pull-right" data-rating='4'></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </ui:repeat>
+
+                                            </h:form>	
+                                        </f:view>
+
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!--    
+                                                            Contenido col 4 para sidebar
+                            -->
+                            <div class="col-md-4">
+                                <div class="container-fluid">
+                                    <ui:insert name="ult-noticias" >
+                                        <ui:include src="/resources/template/ultNoticias.xhtml" />
+                                    </ui:insert>  
+                                </div>
+                            </div> 
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.container -->
+
+    </ui:define>
+
+</ui:composition>
