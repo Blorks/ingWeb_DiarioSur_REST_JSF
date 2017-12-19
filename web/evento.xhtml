@@ -15,21 +15,21 @@
                     <div class="triangulo"></div>
                     <div class="profile">
                         <img class="photo-author img-circle" src="resources/images/perfil/riverftv@gmail.com.jpg" />
-                        <span class="name-author">por #{agendaManagedBean.autorEvento(agendaManagedBean.mostrar_evento.usuarioId)}</span>
+                        <span class="name-author">por #{diarioSurBean.autorEvento(diarioSurBean.evento.usuarioId)}</span>
                     </div>
                     <h5 class="evento-sub-title">DEPORTES</h5>
-                    <h2 class="evento-title">#{agendaManagedBean.mostrar_evento.titulo}</h2>
+                    <h2 class="evento-title">#{diarioSurBean.evento.titulo}</h2>
                 </div>
 
                 <!-- INFO -->
                 <div class="row row-evento">
                     <div class="col-xs-12">
-                        <h4 style="line-height: 25px;">#{agendaManagedBean.mostrar_evento.subtitulo}</h4>
+                        <h4 style="line-height: 25px;">#{diarioSurBean.evento.subtitulo}</h4>
                     </div>
                 </div>
                 <div class="row row-eq-height row-evento" style="padding-right:15px">
                     <div class="col-md-8 text">
-                        <p>#{agendaManagedBean.mostrar_evento.descripcion}</p>
+                        <p>#{diarioSurBean.evento.descripcion}</p>
                     </div>
 
                     <!--    

@@ -67,7 +67,7 @@
                                                         <p align="right"><stong>Título</stong></p>
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <h:inputText class="form-control" id="ev_titulo" value="#{agendaManagedBean.evento.titulo}" required="true"/>
+                                                        <h:inputText class="form-control" id="ev_titulo" value="#{diarioSurBean.evento.titulo}" required="true"/>
                                                     </div>
                                                 </div>
                                                 <div class="row mar_ned">
@@ -75,7 +75,7 @@
                                                         <p align="right"><stong>Subiítulo</stong></p>
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <h:inputText class="form-control" id="ev_subtitulo" value="#{agendaManagedBean.evento.subtitulo}" required="true"/>
+                                                        <h:inputText class="form-control" id="ev_subtitulo" value="#{diarioSurBean.evento.subtitulo}" required="true"/>
                                                     </div>
                                                 </div>
                                                 <div class="row mar_ned">
@@ -83,7 +83,7 @@
                                                         <p align="right"><stong>Contenido</stong></p>
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <h:inputTextarea class="form-control input-sm" id="ev_descripcion" rows="7" value="#{agendaManagedBean.evento.descripcion}" required="true"/>
+                                                        <h:inputTextarea class="form-control input-sm" id="ev_descripcion" rows="7" value="#{diarioSurBean.evento.descripcion}" required="true"/>
                                                     </div>
                                                 </div>
                                                 <div class="row mar_ned">
@@ -91,7 +91,7 @@
                                                         <p align="right"><stong>Precio</stong></p>
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <h:inputText class="form-control input-sm" id="ev_precio" value="#{agendaManagedBean.evento.precio}" required="true"/>
+                                                        <h:inputText class="form-control input-sm" id="ev_precio" value="#{diarioSurBean.evento.precio}" required="true"/>
                                                     </div>
                                                 </div>
                                                 <div class="row mar_ned">
@@ -128,7 +128,7 @@
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="row">
-                                                            <h:inputText class="form-control" id="diaunico" t:type="date" value="#{agendaManagedBean.fecha.dia}">
+                                                            <h:inputText class="form-control" id="diaunico" t:type="date" value="#{diarioSurBean.fecha.dia}">
                                                                 <f:convertDateTime pattern="dd-MM-yyyy"/>  
                                                             </h:inputText>
                                                         </div>
@@ -141,10 +141,10 @@
                                                     <div class="col-md-5">
                                                         <div class="row">
                                                             <div class="form-inline">
-                                                                <h:inputText class="form-control" t:type="date" id="ev_fecha_desde" value="#{agendaManagedBean.fecha.inicio}">
+                                                                <h:inputText class="form-control" t:type="date" id="ev_fecha_desde" value="#{diarioSurBean.fecha.desde}">
                                                                     <f:convertDateTime pattern="dd-MM-yyyy"/>  
                                                                 </h:inputText>
-                                                                <h:inputText class="form-control" style="margin-left: 25px" t:type="date" id="ev_fecha_hasta" value="#{agendaManagedBean.fecha.fin}">
+                                                                <h:inputText class="form-control" style="margin-left: 25px" t:type="date" id="ev_fecha_hasta" value="#{diarioSurBean.fecha.hasta}">
                                                                     <f:convertDateTime pattern="dd-MM-yyyy"/>  
                                                                 </h:inputText>
                                                             </div>
@@ -157,7 +157,7 @@
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="row">
-                                                            <h:inputText id="ev_lista_fechas" class="form-control" t:type="date" value="#{agendaManagedBean.fecha.listaDias}">
+                                                            <h:inputText id="ev_lista_fechas" class="form-control" t:type="date" value="#{diarioSurBean.listaDias}">
                                                                 <f:convertDateTime pattern="dd-MM-yyyy"/>  
                                                             </h:inputText>
                                                             <div class="col-md-6 col-xs-6 wdth">
@@ -249,7 +249,7 @@
                                                                 <p id="mostrar_diaunico"></p>
                                                                 <p><span id="mostrar_ev_fecha_desde"></span> - <span id="mostrar_ev_fecha_hasta"></span></p>
                                                                 <p id="mostrar_ev_lista_fechas"></p>
-                                                                <h:commandButton class="btn btn-primary btn-block" value="Crear evento" action="#{agendaManagedBean.nuevoEvento()}" /> 
+                                                                <h:commandButton class="btn btn-primary btn-block" value="Crear evento" action="#{diarioSurBean.nuevoEvento()}" /> 
                                                             </div>
                                                         </div>
                                                     </div>

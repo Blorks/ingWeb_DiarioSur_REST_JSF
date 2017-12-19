@@ -39,8 +39,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Evento.findById", query = "SELECT e FROM Evento e WHERE e.id = :id")
     , @NamedQuery(name = "Evento.findByDireccionfisica", query = "SELECT e FROM Evento e WHERE e.direccionfisica = :direccionfisica")
     , @NamedQuery(name = "Evento.findByPrecio", query = "SELECT e FROM Evento e WHERE e.precio = :precio")
-    , @NamedQuery(name = "Evento.findByEstarevisado", query = "SELECT e FROM Evento e WHERE e.estarevisado = :estarevisado")
-    , @NamedQuery(name = "Evento.findByDateevId", query = "SELECT e FROM Evento e WHERE e.dateevId = :dateevId")})
+    , @NamedQuery(name = "Evento.findByLatitud", query = "SELECT e FROM Evento e WHERE e.latitud = :latitud")
+    , @NamedQuery(name = "Evento.findByLongitud", query = "SELECT e FROM Evento e WHERE e.longitud = :longitud")
+    , @NamedQuery(name = "Evento.findByEstarevisado", query = "SELECT e FROM Evento e WHERE e.estarevisado = :estarevisado")})
 public class Evento implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -64,16 +65,21 @@ public class Evento implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "PRECIO")
     private Double precio;
+    @Column(name = "LATITUD")
+    private Double latitud;
+    @Column(name = "LONGITUD")
+    private Double longitud;
     @Column(name = "ESTAREVISADO")
     private Integer estarevisado;
-    @Column(name = "DATEEV_ID")
-    private Integer dateevId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventoId")
     private List<Calendario> calendarioList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventoId")
     private List<Tagevento> tageventoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventoId")
     private List<Archivos> archivosList;
+    @JoinColumn(name = "DATEEV_ID", referencedColumnName = "ID")
+    @ManyToOne
+    private Dateev dateevId;
     @JoinColumn(name = "USUARIO_ID", referencedColumnName = "ID")
     @ManyToOne
     private Usuario usuarioId;
@@ -133,20 +139,28 @@ public class Evento implements Serializable {
         this.precio = precio;
     }
 
+    public Double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(Double latitud) {
+        this.latitud = latitud;
+    }
+
+    public Double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
+    }
+
     public Integer getEstarevisado() {
         return estarevisado;
     }
 
     public void setEstarevisado(Integer estarevisado) {
         this.estarevisado = estarevisado;
-    }
-
-    public Integer getDateevId() {
-        return dateevId;
-    }
-
-    public void setDateevId(Integer dateevId) {
-        this.dateevId = dateevId;
     }
 
     @XmlTransient
@@ -174,6 +188,14 @@ public class Evento implements Serializable {
 
     public void setArchivosList(List<Archivos> archivosList) {
         this.archivosList = archivosList;
+    }
+
+    public Dateev getDateevId() {
+        return dateevId;
+    }
+
+    public void setDateevId(Dateev dateevId) {
+        this.dateevId = dateevId;
     }
 
     public Usuario getUsuarioId() {

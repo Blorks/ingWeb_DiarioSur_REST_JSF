@@ -9,7 +9,7 @@
         <li>
             <div class="row">
                 <li class="list-group list-group-logout">
-                    <a href="#{route.irPerfil()}" class="">Mi perfil 
+                    <a href="#{diarioSurBean.irPerfil()}" class="">Mi perfil 
                         <img src="resources/images/perfil/riverftv@gmail.com.jpg" width="18px" class="pull-right no-hover" />
                     </a>
                 </li>
@@ -19,19 +19,19 @@
                     </a>
                 </li>
                 <li class="list-group list-group-logout">
-                    <a href="#{agendaManagedBean.irMisEvento()}" class="">Mis eventos 
+                    <a href="#{diarioSurBean.irPerfil()}" class="">Mis eventos 
                         <span class="pull-right glyphicon glyphicon-heart-empty"></span>
                     </a>
                 </li>
-                <c:if test="#{agendaManagedBean.esPeriodista()}">
+                <c:if test="#{diarioSurBean.esPeriodista()}">
                     <li class="nav-divider"></li>
                     <li class="list-group list-group-logout">
-                        <a href="#{route.irTodoLosEvento()}" class="">Todo los eventos 
+                        <a href="#{diarioSurBean.irTodosLosEventos()}" class="">Todo los eventos 
                             <span class="pull-right glyphicon glyphicon-list-alt"></span>
                         </a>
                     </li>
                     <li class="list-group list-group-logout">
-                        <a href="#{route.irValidarEvento()}" class="">Validar eventos 
+                        <a href="#{diarioSurBean.irValidarEvento()}" class="">Validar eventos 
                             <span class="pull-right glyphicon glyphicon-flash"></span>
                         </a>
                     </li>
@@ -40,7 +40,7 @@
                 <li class="list-group list-group-logout">
                     <f:view>
                         <h:form>
-                            <h:commandButton class="btn btn-link" value="Logout" action="#{agendaManagedBean.logout()}"/>
+                            <h:commandButton class="btn btn-link" value="Logout" action="#{diarioSurBean.logout()}"/>
                         </h:form>
                     </f:view>
 

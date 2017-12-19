@@ -33,8 +33,8 @@
                         <div class="navbar-brand"><a href="#{route.irHome()}" class="no-hover">#{varg.app_title} <sub>#{varg.app_subtitle}</sub></a></div>
                     </div>
                     <ul class="nav navbar-nav flex-item hidden-xs ">
-                        <c:if test="#{!agendaManagedBean.isLogin()}">
-                            <li><a href="#{agendaManagedBean.irCrearEvento()}"><i class="glyphicon glyphicon-open"></i> Crear evento</a></li>
+                        <c:if test="#{!diarioSurBean.isLogin()}">
+                            <li><a href="#{diarioSurBean.irCrearEvento()}"><i class="glyphicon glyphicon-open"></i> Crear evento</a></li>
                         </c:if>
                         <!--    
                                                         Log in/out
@@ -43,7 +43,7 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle no-hover" data-toggle="dropdown"><b><i class="glyphicon glyphicon-user"></i></b> <span class="caret"></span></a>
                                 <ui:insert name="log" >
-                                    <ui:include src="#{agendaManagedBean.isLoginIncl()}" />
+                                    <ui:include src="#{diarioSurBean.isLoginIncl()}" />
                                 </ui:insert>
                             </li>
                         </ul>

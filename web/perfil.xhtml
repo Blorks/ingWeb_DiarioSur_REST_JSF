@@ -24,20 +24,11 @@
                     <!--left col-->
                     <ul class="list-group">
                         <li class="list-group-item text-muted" contenteditable="false">Perfil</li>
-                        <li class="list-group-item text-right"><span class="pull-left"><strong class="">Nombre</strong></span> #{agendaManagedBean.usuario.nombre}</li>
-                        <li class="list-group-item text-right"><span class="pull-left"><strong class="">Apellidos</strong></span> #{agendaManagedBean.usuario.apellidos}</li>
-                        <li class="list-group-item text-right"><span class="pull-left"><strong class="">Email</strong></span> #{agendaManagedBean.usuario.email}</li>
-                        <li class="list-group-item text-right"><span class="pull-left"><strong class="">Rol: </strong></span> #{agendaManagedBean.usuario.rol}</li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong class="">Nombre</strong></span> #{diarioSurBean.usuario.nombre}</li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong class="">Apellidos</strong></span> #{diarioSurBean.usuario.apellidos}</li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong class="">Email</strong></span> #{diarioSurBean.usuario.email}</li>
+                        <li class="list-group-item text-right"><span class="pull-left"><strong class="">Rol: </strong></span> #{diarioSurBean.usuario.rol}</li>
                     </ul>
-
-                    <f:view>
-                        <h:form>
-                            <h:dataTable value="#{agenda.AgendaManagedBean}" var="item">
-
-                            </h:dataTable>
-                        </h:form>
-                    </f:view>
-
 
                     <ul class="list-group">
                         <li class="list-group-item text-muted">Actividad <i class="fa fa-dashboard fa-1x"></i>
@@ -72,12 +63,12 @@
 
                                 <f:view>
                                     <h:form>
-                                        <ui:repeat value="#{agendaManagedBean.filtrarEventosDeUsuario()}" var="ev"  varStatus="estado">  
+                                        <ui:repeat value="#{diarioSurBean.filtrarEventosDeUsuario()}" var="ev"  varStatus="estado">  
                                             <div class="col-md-4">
                                                 <div class="thumbnail">
                                                     <img alt="300x200" src="http://lorempixel.com/600/200/people"/>
                                                     <div class="caption">
-                                                        <p><h:commandButton class="btn btn-link title" value="#{ev.titulo}" action="#{agendaManagedBean.irEvento(ev.id)}"/></p>
+                                                        <p><h:commandButton class="btn btn-link title" value="#{ev.titulo}" action="#{diarioSurBean.verEvento(ev)}"/></p>
                                                         <p>#{ev.titulo}</p>
                                                     </div>
                                                 </div>
