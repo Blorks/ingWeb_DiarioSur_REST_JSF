@@ -51,11 +51,47 @@
                     </div>
                 </div>
                 <!--/col-3-->
+
                 <div class="col-md-9" style="" contenteditable="false">
+
                     <div class="panel panel-default">
-                        <div class="panel-heading">Lorem ipsum dolor sit amet</div>
-                        <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam efficitur diam at ex dignissim placerat. Sed ullamcorper sem a ligula tempus finibus. Sed varius, ante et laoreet maximus, neque turpis consectetur justo</div>
+                        <div class="panel-heading">Mis preferencias</div>
+                        <div class="panel-body">
+                            <p>Priorizar eventos que contengan:</p>
+                            <f:view>
+                                <h:form>
+                                    <h:inputTextarea class="form-control" id="listtag" value="#{diarioSurBean.tagUs}" required="true"/>
+                                    <br />
+                                    <h:commandButton class="btn btn-warning" value="Añadir tags" action="#{agendaManagedBean.anadirTagsUs(agendaManagedBean.usuario.id)}" />
+                                </h:form>
+                            </f:view>
+                            <br />
+                            <div class="well well-lg" style="margin: 10px;">
+                                Ejemplo:<br />
+                                coche, accidente, carretera, etc..                                         
+                            </div>
+          
+                            <f:view>
+                                <h:form>
+                                    <ui:repeat value="#{diarioSurBean.encontrarTagsDeUsuario()}" var="tag"  varStatus="estado">
+                                        <div class="col-md-3">
+                                            <p>
+                                                #{tag.nombre}
+                                                <h:commandButton class="alert-dismissible close btn btn-link" style="float: none;" value="&times;" action="#{diarioSurBean.eliminarTagDeUsuario(tag.id)}"/>
+                                            </p>
+                                        </div>
+                                    </ui:repeat>
+                                </h:form>
+                            </f:view>
+                      
+                        </div>
                     </div>
+
+
+
+
+
+
                     <div class="panel panel-default target">
                         <div class="panel-heading" contenteditable="false">Tus eventos</div>
                         <div class="panel-body">
@@ -77,7 +113,7 @@
 
                                     </h:form>	
                                 </f:view>
-                                
+
                             </div>
                         </div>
                     </div>

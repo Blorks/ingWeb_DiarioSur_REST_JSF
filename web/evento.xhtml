@@ -3,7 +3,10 @@
 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" 
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="plantilla.xhtml">
+                template="plantilla.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="contenido">
 
@@ -15,15 +18,34 @@
                     <div class="triangulo"></div>
                     <div class="profile">
                         <img class="photo-author img-circle" src="resources/images/perfil/riverftv@gmail.com.jpg" />
-                        <span class="name-author">por #{diarioSurBean.autorEvento(diarioSurBean.evento.usuarioId)}</span>
+                        <span class="name-author">por #{diarioSurBean.evento.usuarioId.nombre} #{diarioSurBean.evento.usuarioId.apellidos}</span>
                     </div>
-                    <h5 class="evento-sub-title">DEPORTES</h5>
+                    <h5 class="evento-sub-title">
+                        <ui:repeat value="#{diarioSurBean.encontrarTagsDeEvento()}" var="tag"  varStatus="estado">  
+                            #{tag.nombre.toUpperCase()}
+                            #{", "}
+                        </ui:repeat>
+                    </h5>
                     <h2 class="evento-title">#{diarioSurBean.evento.titulo}</h2>
                 </div>
 
                 <!-- INFO -->
                 <div class="row row-evento">
-                    <div class="col-xs-12">
+                    <c:if test="#{diarioSurBean.esPeriodista()}">
+                        <f:view>
+                            <h:form>
+                                <ui:repeat value="#{diarioSurBean.encontrarTagsDeEvento()}" var="tag"  varStatus="estado">
+                                    <div class="col-md-2">
+                                        <p>
+                                            #{tag.nombre.toUpperCase()}
+                                            <h:commandButton class="alert-dismissible close btn btn-link" style="float: none;" value="&times;" action="#{diarioSurBean.eliminarTagEvento(tag.id)}"/>
+                                        </p>
+                                    </div>
+                                </ui:repeat>
+                            </h:form>
+                        </f:view>
+                    </c:if>
+                    <div class="col-md-12">
                         <h4 style="line-height: 25px;">#{diarioSurBean.evento.subtitulo}</h4>
                     </div>
                 </div>

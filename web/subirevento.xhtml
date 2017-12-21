@@ -120,7 +120,11 @@
                                                 <h5><strong>Fecha del evento</strong></h5>
                                                 <hr/>
                                                 <div class="row mar_ned">
-
+                                                    <div class="btn-group" role="group" style="margin-left: 20px;margin-bottom: 30px;">
+                                                        <button id="btn-dia-unico" type="button" class="btn btn-default active"><i class="glyphicon glyphicon-pushpin"></i> Un día</button>
+                                                        <button id="btn-desde-hasta" type="button" class="btn btn-default"><i class="glyphicon glyphicon-retweet"></i> Desde - Hasta</button>
+                                                        <button id="btn-dias-fechas" type="button" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i> Días concretos</button>
+                                                    </div>
                                                 </div>
                                                 <div class="row mar_ned">
                                                     <div class="col-md-4 col-xs-3">
@@ -128,9 +132,7 @@
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="row">
-                                                            <h:inputText class="form-control" id="diaunico" t:type="date" value="#{diarioSurBean.fecha.dia}">
-                                                                <f:convertDateTime pattern="dd-MM-yyyy"/>  
-                                                            </h:inputText>
+                                                            <input type="date" class="form-control" id="dia-unico" t:type="date" value=""/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -141,12 +143,8 @@
                                                     <div class="col-md-5">
                                                         <div class="row">
                                                             <div class="form-inline">
-                                                                <h:inputText class="form-control" t:type="date" id="ev_fecha_desde" value="#{diarioSurBean.fecha.desde}">
-                                                                    <f:convertDateTime pattern="dd-MM-yyyy"/>  
-                                                                </h:inputText>
-                                                                <h:inputText class="form-control" style="margin-left: 25px" t:type="date" id="ev_fecha_hasta" value="#{diarioSurBean.fecha.hasta}">
-                                                                    <f:convertDateTime pattern="dd-MM-yyyy"/>  
-                                                                </h:inputText>
+                                                                <input type="date" class="form-control" disabled="true" t:type="date" id="dia-desde" value=""/>
+                                                                <input type="date" class="form-control" disabled="true" style="margin-left: 25px" t:type="date" id="dia-hasta" value=""/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -157,22 +155,38 @@
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="row">
-                                                            <h:inputText id="ev_lista_fechas" class="form-control" t:type="date" value="#{diarioSurBean.listaDias}">
-                                                                <f:convertDateTime pattern="dd-MM-yyyy"/>  
-                                                            </h:inputText>
-                                                            <div class="col-md-6 col-xs-6 wdth">
+                                                            <input type="date" id="dias-fechas" class="form-control" disabled="true" t:type="date" value=""/>
+                                                            <div class="col-md-6 col-xs-6 ">
 
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="row mar_ned">
+                                                        <div class="container">
+                                                            <div class="row">
+                                                                <div id="lista-fecha" class="col-md-12" style="margin-top: 20px">
 
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- disabled -->
+                                                        <div id="alert-lista" class="col-md-2 alert-to-clone hidden">
+                                                            <div class="alert alert-warning alert-dismissible fade in" role="alert">
+                                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> 
+                                                                <strong class="dates"></strong>
+                                                            </div>      
+                                                        </div>
+                                                        <!-- /disabled -->
                                                     </div>
                                                 </div>
                                             </div>
+                                            <h:inputText id="fechaOcult" class="hidden" value="#{diarioSurBean.oculto1}"/>
+                                            <h:inputText id="fechaOpcion" class="hidden" value="#{diarioSurBean.oculto2}"/>
                                             <ul class="list-inline pull-right">
                                                 <li><button type="button" class="btn btn-default prev-step">Atrás</button></li>
-                                                <li><button type="button" class="btn btn-primary next-step">Guardar y continuar</button></li>
+                                                <li><button id="nextDates" type="button" class="btn btn-primary next-step">Guardar y continuar</button></li>
                                             </ul>
                                         </div>
                                         <div class="tab-pane" role="tabpanel" id="step3">
@@ -233,7 +247,7 @@
                                         </div>
                                         <div class="tab-pane" role="tabpanel" id="complete">
                                             <div class="step33">
-                                                <h5><strong>Crear evento</strong></h5>
+                                                <h5><strong>Verificación de los datos</strong></h5>
                                                 <hr/>
                                                 <div class="row mar_ned">
                                                     <div class="col-md-4 col-xs-3">
@@ -249,7 +263,17 @@
                                                                 <p id="mostrar_diaunico"></p>
                                                                 <p><span id="mostrar_ev_fecha_desde"></span> - <span id="mostrar_ev_fecha_hasta"></span></p>
                                                                 <p id="mostrar_ev_lista_fechas"></p>
-                                                                <h:commandButton class="btn btn-primary btn-block" value="Crear evento" action="#{diarioSurBean.nuevoEvento()}" /> 
+                                                                <div class="container-fluid">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div class="btn-group">
+                                                                                <h:commandButton class="btn btn-primary" value="Añadir tags" action="#{diarioSurBean.irAnadirTagsEvento()}" /> 
+                                                                                <h:commandButton class="btn btn-warning" value="Crear evento" action="#{diarioSurBean.nuevoEvento()}" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -274,18 +298,87 @@
         <script src="resources/js/fileUpload.js"></script>
         <script>
             $(document).ready(function () {
-                $(".go-resume").click(function() {
+                var esUnico = true;
+                var todosLosDias = false;       // desde-hasta
+                var variosDias = false;         //list
+                //var listaDias[];
+                
+                $("#nextDates").click(function () {
+                    var listDates = "";
+                    var i = 1;
+                    $(".dates").each(function () {
+                        if($(".dates").length > i){
+                            listDates += $(this).text();
+                        }
+                        if(($(".dates").length-1) > i){
+                            listDates += ", ";
+                        }
+                        i++;
+                    });
+                    $('input[id$="fechaOcult"]').val(listDates);
+                    
+                    if(esUnico){
+                        $('input[id$="fechaOpcion"]').val($("#dia-unico").val());
+                    }else if(todosLosDias){
+                        $('input[id$="fechaOpcion"]').val($("#dia-desde").val() + ", " + $("#dia-hasta").val());
+                    }else {
+                        $('input[id$="fechaOpcion"]').val(listDates);
+                    }
+                });
+
+                $("#btn-dia-unico").click(function () {
+                    esUnico = true;
+                    todosLosDias = false;
+                    variosDias = false;
+
+                    $(this).addClass("active");
+                    $("#btn-desde-hasta, #btn-dias-fechas").removeClass("active");
+                    $('input[id$="dia-unico"]').removeAttr("disabled");
+                    $('input[id$="dia-desde"], input[id$="dia-hasta"], input[id$="dias-fechas"]').attr("disabled", true);
+                });
+
+                $("#btn-desde-hasta").click(function () {
+                    esUnico = false;
+                    todosLosDias = true;
+                    variosDias = false;
+
+                    $(this).addClass("active");
+                    $("#btn-dia-unico, #btn-dias-fechas").removeClass("active");
+                    $('input[id$="dia-desde"], input[id$="dia-hasta"]').removeAttr("disabled");
+                    $('input[id$="dia-unico"], input[id$="dias-fechas"]').attr("disabled", true);
+                });
+
+                $("#btn-dias-fechas").click(function () {
+                    esUnico = false;
+                    todosLosDias = false;
+                    variosDias = true;
+
+                    $(this).addClass("active");
+                    $("#btn-dia-unico, #btn-desde-hasta").removeClass("active");
+                    $('input[id$="dias-fechas"]').removeAttr("disabled");
+                    $('input[id$="dia-desde"], input[id$="dia-hasta"], input[id$="dia-unico"]').attr("disabled", true);
+                });
+
+                $('input[id$="dias-fechas"]').change(function () {
+                    var date = new Date(this.value);
+                    var dateFormateada = (date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear());
+                    $('#alert-lista .dates').text(dateFormateada);
+                    var alerta = $('#alert-lista').clone().removeClass('hidden').removeAttr("id");
+                    $('#lista-fecha').append(alerta);                    
+                });
+
+                $(".go-resume").click(function () {
                     $("#mostrar_ev_titulo").html($('input[id$="ev_titulo"]').val());
                     $("#mostrar_ev_subtitulo").html($('input[id$="ev_subtitulo"]').val());
                     $("#mostrar_ev_descripcion").html($('textarea[id$="ev_descripcion"]').val());
                     $("#mostrar_ev_precio").html($('input[id$="ev_precio"]').val() + "€");
-                    
+
                     $("#mostrar_diaunico").html($('input[id$="diaunico"]').val());
                     $("#mostrar_ev_fecha_desde").html($('input[id$="ev_fecha_desde"]').val());
                     $("#mostrar_ev_fecha_hasta").html($('input[id$="ev_fecha_hasta"]').val());
                     $("#mostrar_ev_lista_fechas").html($('input[id$="ev_lista_fechas"]').val());
                 });
-                
+
                 //Initialize tooltips
                 $('.nav-tabs > li a[title]').tooltip();
 

@@ -127,6 +127,18 @@ public class clienteDateev {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
+    public <T> T ultimoIDInsertado_XML(Class<T> responseType) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("ultimo");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
+    }
+
+    public <T> T ultimoIDInsertado_JSON(Class<T> responseType) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("ultimo");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
     public <T> T findAll_XML(Class<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);

@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="plantilla.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:t="http://xmlns.jcp.org/jsf/passthrough">
+
+    <ui:define name="contenido">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <section>
+                        <f:view>
+                            <h:form>
+                                <div class="wizard" style="padding: 50px;">
+                                    <div class="step33">
+                                        <h5><strong>Añadir Tags</strong></h5>
+                                        <hr/>
+                                        <div class="row mar_ned">
+
+                                        </div>
+                                        <div class="row mar_ned">
+                                            <div class="col-md-4">
+                                                <p align="right"><stong>Tags para el evento:</stong></p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <p>#{diarioSurBean.evento.titulo}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row mar_ned">
+                                            <div class="col-md-4">
+                                                <p align="right"><stong>Lista de tags:</stong></p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <h:inputTextarea class="form-control" id="listtag" value="#{diarioSurBean.tagsEvento}" required="true"/>
+                                                <br />
+                                                <div class="well well-lg">
+                                                    Ejemplo:<br />
+                                                    coche, accidente, carretera, etc..                                         
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mar_ned">
+                                            <div class="col-md-4 col-xs-3">
+
+                                                <h:commandButton class="btn btn-warning" value="Crear Evento" action="#{diarioSurBean.nuevoEvento()}" />
+
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="row">
+                                                    <div class="col-md-6 col-xs-6 wdth">
+                                                        <!-- -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mar_ned">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </h:form>
+                        </f:view>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>
