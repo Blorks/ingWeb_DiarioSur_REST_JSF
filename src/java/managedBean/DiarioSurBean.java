@@ -201,7 +201,11 @@ public class DiarioSurBean implements Serializable {
         
         fecha.setEventoId(actualizarIDEvento());
         clienteFecha.edit_XML(fecha, fecha.getId().toString());
-
+        
+        // reset variables
+        fecha = new Dateev();
+        evento = new Evento();
+        
         return "index";
     }
 
