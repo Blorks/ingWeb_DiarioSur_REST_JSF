@@ -50,31 +50,10 @@ public class DiarioSurBean implements Serializable {
     private String tagsEvento = "";
     private String tagsUsuario = "";
 
-    //Borrar cuando Yren corrija el JS
-    private String oculto1 = "";
-    private String oculto2 = "";
-
     
     @PostConstruct
     public void init(){
         usuario.setRol("");
-    }
-
-    
-    public String getOculto1() {
-        return oculto1;
-    }
-
-    public void setOculto1(String oculto1) {
-        this.oculto1 = oculto1;
-    }
-
-    public String getOculto2() {
-        return oculto2;
-    }
-
-    public void setOculto2(String oculto2) {
-        this.oculto2 = oculto2;
     }
 
     //Borrar hasta aquí
@@ -200,14 +179,11 @@ public class DiarioSurBean implements Serializable {
         clienteEventos cliente = new clienteEventos();
         clienteDateev clienteFecha = new clienteDateev();
 
+        
         //Adjunto el usuario creador
         evento.setUsuarioId(usuario);
 
         //Adjunto la fecha del evento
-        //Borrar cuando Yren arregle el JS
-        fecha.setEsunico(0);
-        fecha.setTodoslosdias(0);
-        listaDias = "13/10/1993,27/12/2016,31/10/2018,12/01/2021,16/05/2030";
         adjuntarFecha();
         
         //Adjunto si está revisado o no
@@ -455,6 +431,12 @@ public class DiarioSurBean implements Serializable {
     }
 
     public String irCrearEvento() {
+        // inicializo al primer caso que viene activado en la pagina
+        fecha = new Dateev();
+        fecha.setEsunico(1);
+        fecha.setTodoslosdias(0);
+        fecha.setVariosdias(0);
+        
         return "subirevento.xhtml";
     }
 
