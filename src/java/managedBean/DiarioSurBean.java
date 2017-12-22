@@ -490,5 +490,28 @@ public class DiarioSurBean implements Serializable {
         return "eventosFiltradosFecha.xhtml";
     }
     
+    public List<Evento> mostrarEventosFiltradosPorDireccion() {
+        clienteEventos cliente = new clienteEventos();
+        Response r = cliente.encontrarEventosRevisados_XML(Response.class);
+
+        if (r.getStatus() == 200) {
+            GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
+            };
+            List<Evento> eventos = r.readEntity(genericType);
+
+            return eventos;
+        }
+
+        return null;
+    }
     
+    public String irEventosFiltradosDireccion()
+    {
+        return "eventosFiltradosDireccion.xhtml";
+    }
+    
+    public String irEventosFiltradosPrecio()
+    {
+        return "eventosFiltradosPrecio.xhtml";
+    }
 }

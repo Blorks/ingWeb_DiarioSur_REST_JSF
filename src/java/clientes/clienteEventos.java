@@ -5,7 +5,6 @@
  */
 package clientes;
 
-import entity.Usuario;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
@@ -21,7 +20,7 @@ import javax.ws.rs.client.WebTarget;
  *        client.close();
  * </pre>
  *
- * @author Dani
+ * @author alvar
  */
 public class clienteEventos {
 
@@ -32,6 +31,30 @@ public class clienteEventos {
     public clienteEventos() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
         webTarget = client.target(BASE_URI).path("entity.evento");
+    }
+
+    public <T> T ordenarEventosByPrecioDESC_XML(Class<T> responseType) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("eventoPrecioDESC");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
+    }
+
+    public <T> T ordenarEventosByPrecioDESC_JSON(Class<T> responseType) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("eventoPrecioDESC");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public <T> T ordenarEventosByPrecioASC_XML(Class<T> responseType) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("eventoPrecioASC");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
+    }
+
+    public <T> T ordenarEventosByPrecioASC_JSON(Class<T> responseType) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("eventoPrecioASC");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public void edit_XML(Object requestEntity, String id) throws ClientErrorException {
@@ -66,6 +89,18 @@ public class clienteEventos {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
+    public <T> T encontrarEventosPorDia_XML(Class<T> responseType, String dia) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("eventoFechaUnica/{0}", new Object[]{dia}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
+    }
+
+    public <T> T encontrarEventosPorDia_JSON(Class<T> responseType, String dia) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("eventoFechaUnica/{0}", new Object[]{dia}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
     public <T> T encontrarEventoByID_XML(Class<T> responseType, String id) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("evento/{0}", new Object[]{id}));
@@ -75,6 +110,18 @@ public class clienteEventos {
     public <T> T encontrarEventoByID_JSON(Class<T> responseType, String id) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("evento/{0}", new Object[]{id}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public <T> T encontrarEventosPorListaFechas_XML(Class<T> responseType, String lista) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("eventoListaFechas/{0}", new Object[]{lista}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
+    }
+
+    public <T> T encontrarEventosPorListaFechas_JSON(Class<T> responseType, String lista) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("eventoListaFechas/{0}", new Object[]{lista}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
@@ -132,6 +179,18 @@ public class clienteEventos {
         WebTarget resource = webTarget;
         resource = resource.path("count");
         return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(String.class);
+    }
+
+    public <T> T encontrarEventosPorFechaDesde_XML(Class<T> responseType, String desde) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("eventoFechaDesde/{0}", new Object[]{desde}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
+    }
+
+    public <T> T encontrarEventosPorFechaDesde_JSON(Class<T> responseType, String desde) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("eventoFechaDesde/{0}", new Object[]{desde}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public <T> T find_XML(Class<T> responseType, String id) throws ClientErrorException {
