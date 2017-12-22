@@ -588,6 +588,13 @@ public class DiarioSurBean implements Serializable {
         return "eventosFiltradosFecha.xhtml";
     }
     
+    
+    
+    public String irEventosFiltradosDireccion()
+    {
+        return "eventosFiltradosDireccion.xhtml";
+    }
+    
     public List<Evento> mostrarEventosFiltradosPorDireccion() {
         clienteEventos cliente = new clienteEventos();
         Response r = cliente.encontrarEventosRevisados_XML(Response.class);
@@ -603,13 +610,23 @@ public class DiarioSurBean implements Serializable {
         return null;
     }
     
-    public String irEventosFiltradosDireccion()
-    {
-        return "eventosFiltradosDireccion.xhtml";
-    }
-    
     public String irEventosFiltradosPrecio()
     {
         return "eventosFiltradosPrecio.xhtml";
+    }
+    
+    public String irEventosOrdenadosAlfabeticamente()
+    {
+        return "eventosOrdenadosAlfabeticamente.xhtml";
+    }
+    
+    public String irEventosOrdenadosFecha()
+    {
+        return "eventosOrdenadosFecha.xhtml";
+    }
+    
+    public String irEventosOrdenadosPrecio()
+    {
+        return "eventosOrdenadosPrecio.xhtml";
     }
 }

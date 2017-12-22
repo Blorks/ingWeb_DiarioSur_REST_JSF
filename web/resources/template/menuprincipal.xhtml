@@ -30,7 +30,9 @@
             <div class="container">
                 <div class="flex-container">  
                     <div class="navbar-header flex-item">
-                        <div class="navbar-brand"><a href="#{diarioSurBean.volver()}" class="no-hover">#{varg.app_title} <sub>#{varg.app_subtitle}</sub></a></div>
+                        <h:form>
+                        <div class="navbar-brand"><h:commandLink action="#{diarioSurBean.volver()}" class="no-hover">#{varg.app_title} <sub>#{varg.app_subtitle}</sub></h:commandLink></div>
+                        </h:form>
                     </div>
                     <ul class="nav navbar-nav flex-item hidden-xs ">
                         <c:if test="#{!diarioSurBean.isLogin()}">
