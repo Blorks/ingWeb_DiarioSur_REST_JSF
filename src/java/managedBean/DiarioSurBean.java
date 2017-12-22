@@ -52,7 +52,16 @@ public class DiarioSurBean implements Serializable {
     
     private String tagsEvento = "";
     private String tagsUsuario = "";
+    
+    private String diaBusqueda;
 
+    public String getDiaBusqueda() {
+        return diaBusqueda;
+    }
+
+    public void setDiaBusqueda(String diaBusqueda) {
+        this.diaBusqueda = diaBusqueda;
+    }
     
     @PostConstruct
     public void init(){
@@ -581,14 +590,32 @@ public class DiarioSurBean implements Serializable {
         return usuario.getRol().equals("Periodista");
     }
     
-    //FUNCIONES MOSTRAR EVENTOS POR FILTROS ALVARO
+    //FUNCIONES MOSTRAR EVENTOS POR FILTROS Y ORDEN ALVARO
     
     public String irEventosFiltradosFecha()
     {
         return "eventosFiltradosFecha.xhtml";
     }
     
+    public String irIntroducirFechaBusqueda()
+    {
+        return "introducirFechaBusqueda.xhtml";
+    }
     
+    public List<Evento> mostrarEventosFiltradosPorFecha() {
+        clienteEventos cliente = new clienteEventos();
+        Response r = cliente.encontrarEventosPorDia_XML(Response.class, diaBusqueda);
+
+        if (r.getStatus() == 200) {
+            GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
+            };
+            List<Evento> eventos = r.readEntity(genericType);
+
+            return eventos;
+        }
+
+        return null;
+    }
     
     public String irEventosFiltradosDireccion()
     {
