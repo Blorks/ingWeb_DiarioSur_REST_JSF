@@ -427,7 +427,7 @@ public class DiarioSurBean implements Serializable {
     }
 
     public String irTodosLosEventos() {
-        return "todosloseventos.xhtml";
+        return "todoloseventos.xhtml";
     }
 
     public String irValidarEvento() {
@@ -482,4 +482,13 @@ public class DiarioSurBean implements Serializable {
     public boolean esPeriodista() {
         return usuario.getRol().equals("Periodista");
     }
+    
+    //FUNCIONES MOSTRAR EVENTOS POR FILTROS ALVARO
+    
+    public String irEventosFiltradosFecha()
+    {
+        return "eventosFiltradosFecha.xhtml";
+    }
+    
+    
 }
