@@ -22,7 +22,7 @@
                                                     Publicidad
                     -->
                     <div class="col-md-12">
-                        <img src="http://via.placeholder.com/850x350?text=Publicidad" width="100%"/>
+                        <img src="resources/images/banner_Diario_Sur.jpg" width="100%"/>
                     </div>
                 </div>
                 <!--    
@@ -82,11 +82,11 @@
 
                                         <f:view>
                                             <h:form>
-                                                <ui:repeat value="#{agendaManagedBean.filtrarEventosNoRevisados()}" var="ev"  varStatus="estado">  
+                                                <ui:repeat value="#{diarioSurBean.mostrarTodosLosEventosNoRevisados()}" var="ev"  varStatus="estado">  
                                                     <div class="col-md-12">
                                                         <div class="tuyin first">
                                                             <span class="title">
-                                                                <h:commandButton class="btn btn-link title" value="#{ev.titulo}" action="#{agendaManagedBean.irEvento(ev.id)}"/> 
+                                                                <h:commandButton class="btn btn-link title" value="#{ev.titulo}" action="#{diarioSurBean.verEvento(ev)}"/> 
                                                             </span>
                                                             <div class="plan-name">#{ev.subtitulo}</div>
                                                             <div class="text">
@@ -94,12 +94,12 @@
                                                                 <div class="alert alert-warning" role="alert" style="margin-bottom: 20px;padding-bottom: 25px"> 
                                                                     Evento a la espera de ser revisado
                                                                     <div class="btn-group pull-right">
-                                                                        <h:commandButton class="btn btn-success" value="Validar ahora" action="#{agendaManagedBean.validarEvento(ev.id, ev.usuarioId.id)}"/>
-                                                                        <h:commandButton class="btn btn-warning" value="Editar" action="#{agendaManagedBean.editarEvento(ev.id)}"/>
-                                                                        <h:commandButton class="btn btn-danger" value="Borrar" action="#{agendaManagedBean.borrarEvento(ev.id)}"/>
+                                                                        <h:commandButton class="btn btn-success" value="Validar ahora" action="#{diarioSurBean.validarEvento(ev)}"/>
+                                                                        <h:commandButton class="btn btn-warning" value="Editar" action="#{diarioSurBean.irEditarEvento(ev)}"/>
+                                                                        <h:commandButton class="btn btn-danger" value="Borrar" action="#{diarioSurBean.borrarEvento(ev)}"/>
                                                                     </div>
                                                                 </div>
-                                                                <p class="small pull-left" ><span class="glyphicon glyphicon-time"></span> #{agendaManagedBean.fechaEvento(ev.dateevId)}</p>  
+                                                                <p class="small pull-left" ><span class="glyphicon glyphicon-time"></span> #{diarioSurBean.mostrarFechaDeEvento(ev)}</p>  
                                                                 <div id="stars-existing" class="starrr pull-right" data-rating='4'></div>
                                                             </div>
                                                         </div>

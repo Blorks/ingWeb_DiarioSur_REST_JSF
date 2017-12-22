@@ -23,7 +23,7 @@
                                                     Publicidad
                     -->
                     <div class="col-md-12">
-                        <img src="http://via.placeholder.com/850x350?text=Publicidad" width="100%"/>
+                        <img src="resources/images/banner_Diario_Sur.jpg" width="100%"/>
                     </div>
                 </div>
                 <!--    
@@ -83,11 +83,11 @@
 
                                         <f:view>
                                             <h:form>
-                                                <ui:repeat value="#{agendaManagedBean.encontrarTodosLosEventos()}" var="ev"  varStatus="estado">  
+                                                <ui:repeat value="#{diarioSurBean.mostrarTodosLosEventos()}" var="ev"  varStatus="estado">  
                                                     <div class="col-md-6">
                                                         <div class="tuyin first">
                                                             <span class="title">
-                                                                <h:commandButton class="btn btn-link title" value="#{ev.titulo}" action="#{agendaManagedBean.irEvento(ev.id)}"/> 
+                                                                <h:commandButton class="btn btn-link title" value="#{ev.titulo}" action="#{diarioSurBean.verEvento(ev)}"/> 
                                                             </span>
                                                             <div class="plan-name">#{ev.subtitulo}</div>
                                                             <div class="text">
@@ -97,14 +97,14 @@
                                                                         Evento a la espera de ser revisado
                                                                     </div>
                                                                 </ui:fragment>
-                                                                <p class="small pull-left" ><span class="glyphicon glyphicon-time"></span> #{agendaManagedBean.fechaEvento(ev.dateevId)}</p>  
+                                                                <p class="small pull-left" ><span class="glyphicon glyphicon-time"></span> #{diarioSurBean.mostrarFechaDeEvento(ev)}</p>  
                                                                 <div id="stars-existing" class="starrr pull-right" data-rating='4'></div>
                                                                 <div class="container-fluid">
                                                                     <div class="row">
                                                                         <div class="col-md-12">
                                                                             <div class="btn-group pull-right" style="margin-top: 20px;">        
-                                                                                <h:commandButton class="btn btn-warning" value="Editar" action="#{agendaManagedBean.editarEvento(ev.id)}"/>
-                                                                                <h:commandButton class="btn btn-danger" value="Borrar" action="#{agendaManagedBean.borrarEvento(ev.id)}"/>
+                                                                                <h:commandButton class="btn btn-warning" value="Editar" action="#{diarioSurBean.irEditarEvento(ev)}"/>
+                                                                                <h:commandButton class="btn btn-danger" value="Borrar" action="#{diarioSurBean.borrarEvento(ev)}"/>
                                                                             </div>
                                                                         </div>
                                                                     </div>

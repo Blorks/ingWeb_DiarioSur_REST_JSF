@@ -44,6 +44,7 @@ public class DiarioSurBean implements Serializable {
     private Usuario usuario = new Usuario();
     
     private Evento evento = new Evento();
+    private int edit = 0;
     
     private Dateev fecha = new Dateev();
     private String listaDias = "";
@@ -156,10 +157,25 @@ public class DiarioSurBean implements Serializable {
 
         return null;
     }
+    
+    public List<Evento> mostrarTodosLosEventosNoRevisados() {
+        clienteEventos cliente = new clienteEventos();
+        Response r = cliente.encontrarEventosNoRevisados_XML(Response.class);
+
+        if (r.getStatus() == 200) {
+            GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
+            };
+            List<Evento> eventos = r.readEntity(genericType);
+
+            return eventos;
+        }
+
+        return null;
+    }
 
     public void editarEvento() {
         clienteEventos cliente = new clienteEventos();
-        cliente.edit_XML(Response.class, evento.getId().toString());
+        cliente.edit_XML(evento, evento.getId().toString());
     }
     
     private int actualizarIDEvento(){
@@ -167,7 +183,7 @@ public class DiarioSurBean implements Serializable {
         clienteEventos cliente = new clienteEventos();
         Response r = cliente.ultimoIDInsertado_XML(Response.class);
         
-        if (r.getStatus() == 200) {
+        if (r.getStatus() == 200){
             GenericType<List<Evento>> genericType = new GenericType<List<Evento>>(){};
             List<Evento> lista = r.readEntity(genericType);
             
@@ -177,42 +193,51 @@ public class DiarioSurBean implements Serializable {
     }
 
     public String nuevoEvento() {
-        clienteEventos cliente = new clienteEventos();
-        clienteDateev clienteFecha = new clienteDateev();
+        if(edit == 0){
+            clienteEventos cliente = new clienteEventos();
+            clienteDateev clienteFecha = new clienteDateev();
 
         
-        //Adjunto el usuario creador
-        evento.setUsuarioId(usuario);
+            //Adjunto el usuario creador
+            evento.setUsuarioId(usuario);
 
-        //Adjunto la fecha del evento
-        adjuntarFecha();
+            //Adjunto la fecha del evento
+            adjuntarFecha();
         
-        //Adjunto si está revisado o no
-        if(esPeriodista()){
-            evento.setEstarevisado(1);
+            //Adjunto si está revisado o no
+            if(esPeriodista()){
+                evento.setEstarevisado(1);
+            }else{
+                evento.setEstarevisado(0);
+            }
+
+            cliente.create_XML(evento);
+            evento.setId(actualizarIDEvento());
+        
+            //Adjunto tags al evento
+            adjuntarTagsEvento();
+        
+            fecha.setEventoId(actualizarIDEvento());
+            clienteFecha.edit_XML(fecha, fecha.getId().toString());
+        
+            // reset variables
+            fecha = new Dateev();
+            evento = new Evento();
         }else{
-            evento.setEstarevisado(0);
+            editarEvento();
         }
 
-        cliente.create_XML(evento);
-        evento.setId(actualizarIDEvento());
-        
-        //Adjunto tags al evento
-        adjuntarTagsEvento();
-        
-        fecha.setEventoId(actualizarIDEvento());
-        clienteFecha.edit_XML(fecha, fecha.getId().toString());
-        
-        // reset variables
-        fecha = new Dateev();
-        evento = new Evento();
-        
         return "index";
     }
 
-    public String borrarEvento(Evento e) {
-
-        return "/";
+    public String borrarEvento(Evento ev) {
+        clienteEventos cliente = new clienteEventos();
+        clienteDateev clienteFecha = new clienteDateev();
+        
+        clienteFecha.remove(ev.getDateevId().getId().toString());
+        cliente.remove(ev.getId().toString());
+        
+        return "todoloseventos.xhtml";
     }
 
 
@@ -229,6 +254,17 @@ public class DiarioSurBean implements Serializable {
         }
 
         return null;
+    }
+    
+    public String validarEvento(Evento ev){
+        clienteEventos cliente = new clienteEventos();
+        Evento eventoTemporal = ev;
+        
+        eventoTemporal.setEstarevisado(1);
+        
+        cliente.edit_XML(eventoTemporal, ev.getId().toString());
+        
+        return "validarEvento.xhtml";
     }
 
     //METODOS REFERENTES A LOS TAGS
@@ -474,6 +510,7 @@ public class DiarioSurBean implements Serializable {
 
     public String irEditarEvento(Evento e) {
         evento = e;
+        edit = 1;
         return "subirevento.xhtml";
     }
 
