@@ -23,6 +23,8 @@
                     -->
                     <div class="col-md-12">
                         <img src="resources/images/banner_Diario_Sur.jpg" width="100%"/>
+                        <h:inputText id="latitudUsuarioOculto" class="hidden" value="#{diarioSurBean.usuarioLatitud}"/>
+                        <h:inputText id="longitudUsuarioOculto" class="hidden" value="#{diarioSurBean.usuarioLongitud}"/>
                     </div>
                 </div>
                 <!--    
@@ -131,6 +133,21 @@
             </div>
         </div><!-- /.container -->
 
+    </ui:define>
+    
+    <ui:define name="script-individual">
+        <script>
+            $(document).ready(function () {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(showPosition);
+                    } else {
+                        console.log("Geolocation is not supported by this browser.");
+                    }
+                    
+                    $('input[id$="latitudUsuarioOculto"]').val(position.coords.latitude);
+                    $('input[id$="longitudUsuarioOculto"]').val(position.coords.longitude);
+                });
+        </script>
     </ui:define>
 
 </ui:composition>

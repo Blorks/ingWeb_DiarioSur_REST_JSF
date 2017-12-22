@@ -42,6 +42,8 @@ public class DiarioSurBean implements Serializable {
      * Creates a new instance of diarioSurBean
      */
     private Usuario usuario = new Usuario();
+    private double usuarioLatitud;
+    private double usuarioLongitud;
     
     private Evento evento = new Evento();
     private int edit = 0;
@@ -106,6 +108,24 @@ public class DiarioSurBean implements Serializable {
     public void setTagsUsuario(String tagsUsuario) {
         this.tagsUsuario = tagsUsuario;
     }
+
+    public double getUsuarioLatitud() {
+        return usuarioLatitud;
+    }
+
+    public void setUsuarioLatitud(double usuarioLatitud) {
+        this.usuarioLatitud = usuarioLatitud;
+    }
+
+    public double getUsuarioLongitud() {
+        return usuarioLongitud;
+    }
+
+    public void setUsuarioLongitud(double usuarioLongitud) {
+        this.usuarioLongitud = usuarioLongitud;
+    }
+    
+    
 
     
 
@@ -581,7 +601,7 @@ public class DiarioSurBean implements Serializable {
         return usuario.getRol().equals("Periodista");
     }
     
-    //FUNCIONES MOSTRAR EVENTOS POR FILTROS ALVARO
+    //FUNCIONES MOSTRAR EVENTOS POR FILTROS
     
     public String irEventosFiltradosFecha()
     {
@@ -628,5 +648,43 @@ public class DiarioSurBean implements Serializable {
     public String irEventosOrdenadosPrecio()
     {
         return "eventosOrdenadosPrecio.xhtml";
+    }
+    
+    private double calcularDistanciaHastaEvento(double latitudEvento, double longitudEvento, double latitudUsuario, double longitudUsuario){
+        double radioTierra = 6371;
+        double dLat = Math.toRadians(latitudUsuario - latitudEvento);
+        double dLng = Math.toRadians(longitudUsuario - longitudEvento);
+        
+        double sindLat = Math.sin(dLat / 2);
+        double sindLng = Math.sin(dLng / 2);
+        
+        double val = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
+                * Math.cos(Math.toRadians(latitudEvento)) + Math.cos(Math.toRadians(latitudUsuario));
+        double val2 = 2 * Math.atan2(Math.sqrt(val), Math.sqrt(1 - val));
+        double distancia = radioTierra * val2;
+        
+        return distancia;
+    }
+    
+    public List<Evento> mostrarEventosFiltradosPorDistancia(int distanciaMaxima){
+        clienteEventos cliente = new clienteEventos();
+        List<Evento> listaTemp = new ArrayList<>();
+        Response r = cliente.findAll_XML(Response.class);
+        
+        if (r.getStatus() == 200) {
+            GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
+            };
+            List<Evento> eventos = r.readEntity(genericType);
+
+            for(int i=0; i<eventos.size(); i++){
+                double distancia = calcularDistanciaHastaEvento(eventos.get(i).getLatitud(), eventos.get(i).getLongitud(), usuarioLatitud, usuarioLongitud);
+                if(distancia <= distanciaMaxima){
+                    listaTemp.add(eventos.get(i));
+                }
+            }
+        }
+        
+        return listaTemp;
+        
     }
 }
