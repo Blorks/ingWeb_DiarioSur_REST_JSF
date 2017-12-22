@@ -8,12 +8,14 @@ package managedBean;
 import clientes.clienteDateev;
 import clientes.clienteEventos;
 import clientes.clienteTag;
+import clientes.clienteTagUsuario;
 import clientes.clienteTagevento;
 import clientes.clienteUsuario;
 import entity.Dateev;
 import entity.Evento;
 import entity.Tag;
 import entity.Tagevento;
+import entity.Tagusuario;
 import entity.Usuario;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -56,7 +58,6 @@ public class DiarioSurBean implements Serializable {
         usuario.setRol("");
     }
 
-    //Borrar hasta aquí
     public Evento getEvento() {
         return evento;
     }
@@ -232,7 +233,27 @@ public class DiarioSurBean implements Serializable {
 
     //METODOS REFERENTES A LOS TAGS
     public List<Tag> encontrarTagsDeUsuario() {
-        return null;
+        clienteTagUsuario cliente = new clienteTagUsuario();
+        clienteTag cliente2 = new clienteTag();
+        List<Tag> tagsUsuarioTemp = new ArrayList<>();
+        
+        Response r = cliente.encontrarTagUser_XML(Response.class, usuario.getId().toString());
+        
+        if (r.getStatus() == 200) {
+            GenericType<List<Tagusuario>> genericType = new GenericType<List<Tagusuario>>(){};
+            GenericType<List<Tag>> genericType2 = new GenericType<List<Tag>>(){};
+            List<Tagusuario> lista = r.readEntity(genericType);
+            
+            for(int i=0; i<lista.size(); i++){
+                r = cliente2.encontrarTagPorNombre_XML(Response.class, lista.get(i).getTagId().getNombre());
+                
+                if(r.getStatus() == 200){
+                    List<Tag> lista2 = r.readEntity(genericType2);
+                    tagsUsuarioTemp.add(lista2.get(0));
+                }
+            }
+        }
+        return tagsUsuarioTemp;
     }
 
     public List<Tag> encontrarTagsDeEvento() {
@@ -266,7 +287,7 @@ public class DiarioSurBean implements Serializable {
         cliente.create_XML(tag);
         
         Response r = cliente.encontrarTagPorNombre_XML(Response.class, strTag);
-        if (r.getStatus() == 200) {
+        if (r.getStatus() == 200){
             GenericType<List<Tag>> genericType = new GenericType<List<Tag>>(){};
             List<Tag> lista = r.readEntity(genericType);
             
@@ -294,21 +315,61 @@ public class DiarioSurBean implements Serializable {
             cliente.create_XML(tagEv);
         }  
     }
+    
+    public void adjuntarTagsUsuario(){
+        clienteTagUsuario cliente = new clienteTagUsuario();
+        String[] partes = tagsUsuario.split(",");
+        String sinEspacio;
+        Tag tagCreado;
+        Tagusuario tagUs = new Tagusuario();
 
-    public String eliminarTagDeUsuario(int tagUsuario) {
+        
+        for(int i=0;i<partes.length; i++){
+            sinEspacio = partes[i].trim().toLowerCase();
+            tagCreado = crearTag(sinEspacio);
+            
+            tagUs.setUsuarioId(usuario);
+            tagUs.setTagId(tagCreado);
+            
+            cliente.create_XML(tagUs);
+        } 
+    }
+
+    public String eliminarTagDeUsuario(Tag tagUsuario) {
+        clienteTag cliente = new clienteTag();
+        clienteTagUsuario cliente2 = new clienteTagUsuario();
+        
+        Response r = cliente2.encontrarTagUserPorTagyUsuario_XML(Response.class, tagUsuario.getId().toString(), usuario.getId().toString());
+        if (r.getStatus() == 200){
+            GenericType<List<Tagusuario>> genericType = new GenericType<List<Tagusuario>>(){};
+            List<Tagusuario> lista = r.readEntity(genericType);
+            
+            for(int i=0; i<lista.size(); i++){
+                cliente2.remove(lista.get(i).getId().toString());
+            }
+            
+            cliente.remove(tagUsuario.getId().toString());
+        }
+        
         return "perfil";
     }
 
-    public String eliminarTagEvento(int tagEvento) {
-        //clienteTag cliente = new clienteTag();
+    public String eliminarTagEvento(Tag tagEvento) {
+        clienteTag cliente = new clienteTag();
+        clienteTagevento cliente2 = new clienteTagevento();
         
-        //Response r = cliente.find_XML(Response.class, tagEvento);
-        
-        
-        
-        
-        
-        
+        Response r = cliente2.encontrarTagEvPorTagyEvento_JSON(Response.class, tagEvento.getId().toString(), evento.getId().toString());
+        if (r.getStatus() == 200){
+            GenericType<List<Tagevento>> genericType = new GenericType<List<Tagevento>>(){};
+            List<Tagevento> lista = r.readEntity(genericType);
+            
+            for(int i=0; i<lista.size(); i++){
+                cliente2.remove(lista.get(i).getId().toString());
+            }
+            
+            cliente.remove(tagEvento.getId().toString());
+        }
+
         return "evento";
     }
 
@@ -403,7 +464,7 @@ public class DiarioSurBean implements Serializable {
 
     //METODOS DE MOVIMIENTO ENTRE JSF
     public String volver() {
-        return "index";
+        return "index.xhtml";
     }
 
     public String verEvento(Evento e) {
