@@ -47,8 +47,8 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Filtrar <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#{diarioSurBean.irIntroducirFechaBusqueda()}">Fecha <i class="glyphicon glyphicon-sort pull-right"></i></a></li>
-                                    <li><a href="#">Dirección</a></li>
-                                    <li><a href="#">Precio <i class="glyphicon glyphicon-sort-by-attributes pull-right"></i></a></li>
+                                    <li><a href="#{diarioSurBean.irIntroducirDistanciaMaxima()}">Dirección</a></li>
+                                    <li><a href="#{diarioSurBean.irIntroducirPrecioMaximo()}">Precio <i class="glyphicon glyphicon-sort-by-attributes pull-right"></i></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -56,9 +56,9 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ordenar <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Alfabeticamente <i class="glyphicon glyphicon-sort-by-alphabet pull-right"></i></a></li>
-                                    <li><a href="#">Fecha <i class="glyphicon glyphicon-sort pull-right"></i></a></li>
-                                    <li><a href="#">Precio <i class="glyphicon glyphicon-sort-by-attributes pull-right"></i></a></li>
+                                    <li><a href="#{diarioSurBean.irEventosOrdenadosAlfabeticamente()}">Alfabeticamente <i class="glyphicon glyphicon-sort-by-alphabet pull-right"></i></a></li>
+                                    <li><a href="#{diarioSurBean.irEventosOrdenadosFecha()}">Fecha <i class="glyphicon glyphicon-sort pull-right"></i></a></li>
+                                    <li><a href="#{diarioSurBean.irEventosOrdenadosPrecio()}">Precio <i class="glyphicon glyphicon-sort-by-attributes pull-right"></i></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -89,7 +89,7 @@
 
                                         <f:view>
                                             <h:form>
-                                                <ui:repeat value="#{diarioSurBean.mostrarTodosLosEventosRevisados()}" var="ev"  varStatus="estado">  
+                                                <ui:repeat value="#{diarioSurBean.mostrarEventosOrdenadosAlfabeticamente()}" var="ev"  varStatus="estado">  
                                                     <div class="col-md-6">
                                                         <div class="tuyin first">
                                                             <span class="title">
@@ -98,6 +98,7 @@
                                                             <div class="plan-name">#{ev.subtitulo}</div>
                                                             <div class="text">
                                                                 <p>#{ev.descripcion}</p>
+                                                                <p>#{ev.precio} €</p>
                                                                 <p class="small pull-left" ><span class="glyphicon glyphicon-time"></span> #{diarioSurBean.mostrarFechaDeEvento(ev)}</p>  
                                                                 <div id="stars-existing" class="starrr pull-right" data-rating='4'></div>
                                                             </div>
