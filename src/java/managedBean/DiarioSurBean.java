@@ -42,8 +42,8 @@ public class DiarioSurBean implements Serializable {
      * Creates a new instance of diarioSurBean
      */
     private Usuario usuario = new Usuario();
-    private double usuarioLatitud;
-    private double usuarioLongitud;
+    private double usuarioLatitud = 36.752286;
+    private double usuarioLongitud = -4.419255; //mi casa
     
     private Evento evento = new Evento();
     private int edit = 0;
@@ -54,7 +54,34 @@ public class DiarioSurBean implements Serializable {
     
     private String tagsEvento = "";
     private String tagsUsuario = "";
+    
+    private String diaBusqueda;
+    private int distMaxima;
+    private String precioMax;
 
+    public String getPrecioMax() {
+        return precioMax;
+    }
+
+    public void setPrecioMax(String precioMax) {
+        this.precioMax = precioMax;
+    }
+
+    public int getDistMaxima() {
+        return distMaxima;
+    }
+
+    public void setDistMaxima(int distMaxima) {
+        this.distMaxima = distMaxima;
+    }
+    
+    public String getDiaBusqueda() {
+        return diaBusqueda;
+    }
+
+    public void setDiaBusqueda(String diaBusqueda) {
+        this.diaBusqueda = diaBusqueda;
+    }
     
     @PostConstruct
     public void init(){
@@ -601,33 +628,41 @@ public class DiarioSurBean implements Serializable {
         return usuario.getRol().equals("Periodista");
     }
     
-    //FUNCIONES MOSTRAR EVENTOS POR FILTROS
+    //FUNCIONES MOSTRAR EVENTOS POR FILTROS Y ORDEN ALVARO
     
     public String irEventosFiltradosFecha()
     {
         return "eventosFiltradosFecha.xhtml";
     }
     
+    public String irIntroducirFechaBusqueda()
+    {
+        return "introducirFechaBusqueda.xhtml";
+    }
     
+    public List<Evento> mostrarEventosFiltradosPorFecha() {
+        clienteEventos cliente = new clienteEventos();
+        Response r = cliente.encontrarEventosPorDia_XML(Response.class, diaBusqueda);
+
+        if (r.getStatus() == 200) {
+            GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
+            };
+            List<Evento> eventos = r.readEntity(genericType);
+            
+            return eventos;
+        }
+
+        return null;
+    }
     
     public String irEventosFiltradosDireccion()
     {
         return "eventosFiltradosDireccion.xhtml";
     }
     
-    public List<Evento> mostrarEventosFiltradosPorDireccion() {
-        clienteEventos cliente = new clienteEventos();
-        Response r = cliente.encontrarEventosRevisados_XML(Response.class);
-
-        if (r.getStatus() == 200) {
-            GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
-            };
-            List<Evento> eventos = r.readEntity(genericType);
-
-            return eventos;
-        }
-
-        return null;
+    public String irIntroducirDistanciaMaxima()
+    {
+        return "introducirDistanciaMaxima.xhtml";
     }
     
     public String irEventosFiltradosPrecio()
@@ -635,9 +670,42 @@ public class DiarioSurBean implements Serializable {
         return "eventosFiltradosPrecio.xhtml";
     }
     
+    public String irIntroducirPrecioMaximo()
+    {
+        return "introducirPrecioMaximo.xhtml";
+    }
+    
+    public List<Evento> mostrarEventosFiltradosPorPrecio() {
+        clienteEventos cliente = new clienteEventos();
+        Response r = cliente.encontrarEventoByPrecioMax_XML(Response.class, precioMax);
+        if (r.getStatus() == 200) {
+            GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
+            };
+            List<Evento> eventos = r.readEntity(genericType);
+            
+            return eventos;
+        }
+
+        return null;
+    }
+    
     public String irEventosOrdenadosAlfabeticamente()
     {
         return "eventosOrdenadosAlfabeticamente.xhtml";
+    }
+    
+    public List<Evento> mostrarEventosOrdenadosAlfabeticamente() {
+        clienteEventos cliente = new clienteEventos();
+        Response r = cliente.ordenarEventosAlfabeticamente_XML(Response.class);
+        if (r.getStatus() == 200) {
+            GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
+            };
+            List<Evento> eventos = r.readEntity(genericType);
+            
+            return eventos;
+        }
+
+        return null;
     }
     
     public String irEventosOrdenadosFecha()
@@ -645,9 +713,37 @@ public class DiarioSurBean implements Serializable {
         return "eventosOrdenadosFecha.xhtml";
     }
     
+    public List<Evento> mostrarEventosOrdenadosPorFecha() { //FALTA TERMINAR
+        clienteEventos cliente = new clienteEventos();
+        Response r = cliente.ordenarEventosPrecio_XML(Response.class);
+        if (r.getStatus() == 200) {
+            GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
+            };
+            List<Evento> eventos = r.readEntity(genericType);
+            
+            return eventos;
+        }
+
+        return null;
+    }
+    
     public String irEventosOrdenadosPrecio()
     {
         return "eventosOrdenadosPrecio.xhtml";
+    }
+    
+    public List<Evento> mostrarEventosOrdenadosPorPrecio() {
+        clienteEventos cliente = new clienteEventos();
+        Response r = cliente.ordenarEventosPrecio_XML(Response.class);
+        if (r.getStatus() == 200) {
+            GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
+            };
+            List<Evento> eventos = r.readEntity(genericType);
+            
+            return eventos;
+        }
+
+        return null;
     }
     
     private double calcularDistanciaHastaEvento(double latitudEvento, double longitudEvento, double latitudUsuario, double longitudUsuario){
@@ -665,7 +761,7 @@ public class DiarioSurBean implements Serializable {
         return distancia;
     }
     
-    public List<Evento> mostrarEventosFiltradosPorDistancia(int distanciaMaxima){
+    public List<Evento> mostrarEventosFiltradosPorDistancia(){
         clienteEventos cliente = new clienteEventos();
         List<Evento> listaTemp = new ArrayList<>();
         Response r = cliente.findAll_XML(Response.class);
@@ -677,7 +773,7 @@ public class DiarioSurBean implements Serializable {
 
             for(int i=0; i<eventos.size(); i++){
                 double distancia = calcularDistanciaHastaEvento(eventos.get(i).getLatitud(), eventos.get(i).getLongitud(), usuarioLatitud, usuarioLongitud);
-                if(distancia <= distanciaMaxima){
+                if(distancia <= distMaxima){
                     listaTemp.add(eventos.get(i));
                 }
             }
