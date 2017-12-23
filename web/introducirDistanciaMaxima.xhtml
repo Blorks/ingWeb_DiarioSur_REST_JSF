@@ -20,40 +20,6 @@
                     <div class="col-md-12">
                         <img src="resources/images/banner_Diario_Sur.jpg" width="100%"/>
                     </div>
-                    
-                    <div class="variables-ocultas">
-                        <h:inputText id="latitudUsuarioOculto" class="hidden" value="#{diarioSurBean.usuarioLatitud}"/>
-                        <h:inputText id="longitudUsuarioOculto" class="hidden" value="#{diarioSurBean.usuarioLongitud}"/>
-                        
-                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-                        <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyAb7jwWqPc7TD6J69V6dZS_9lucF5CxkF8"></script>
-                        <script>
-                            $(document).ready(function () {
-                
-                                if (navigator.geolocation) {
-                                    navigator.geolocation.getCurrentPosition(showPosition);
-                                    
-                                    function showPosition(pos){
-                                    var coordenadas = pos.coords;
-                                    
-                                    var latitude = coordenadas.latitude;
-                                    var longitude = coordenadas.longitude;
-                                    
-                                    console.log(latitude);
-                                    console.log(longitude);
-                                    
-                                    document.getElementById('latitudUsuarioOculto').value=latitude;
-                                    
-                                    //$('input[id$=""]').val(latitude);
-                                    $('input[id$="longitudUsuarioOculto"]').val(longitude);
-                                    }
-                                } else {
-                                    console.log("Geolocation is not supported by this browser.");
-                                }  
-                            });
-                        </script>
-                    </div>
-                    
                 </div>
                 <!--    
                                                 Submenu Filtrado
@@ -117,6 +83,31 @@
                                     <div class="row transparent">
                                         <f:view>
                                             <h:form>
+                                                <h:inputText id="latitudUsuarioOculto" class="hidden" value="#{diarioSurBean.usuarioLatitud}"/>
+                                                <h:inputText id="longitudUsuarioOculto" class="hidden" value="#{diarioSurBean.usuarioLongitud}"/>
+                                                
+                                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                                                <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyAb7jwWqPc7TD6J69V6dZS_9lucF5CxkF8"></script>
+                                                <script>
+                                                    $(document).ready(function () {
+                                                        if (navigator.geolocation) {
+                                                            navigator.geolocation.getCurrentPosition(showPosition);
+                                    
+                                                            function showPosition(pos){
+                                                                var coordenadas = pos.coords;
+                                    
+                                                                var latitud = coordenadas.latitude;
+                                                                var longitud = coordenadas.longitude;
+                                    
+                                                                $('input[id$="latitudUsuarioOculto"]').val(latitud);
+                                                                $('input[id$="longitudUsuarioOculto"]').val(longitud);
+                                                            }
+                                                        } else {
+                                                            console.log("Geolocation is not supported by this browser.");
+                                                        }  
+                                                    });
+                                                </script>
+                                                
                                                 Introduzca la distancia maxima: <h:inputText value="#{diarioSurBean.distMaxima}"/>
                                                 <h:commandButton value="Buscar" action="#{diarioSurBean.irEventosFiltradosDireccion()}"/><br/>
                                                 <h:commandButton value="Volver" action="#{diarioSurBean.volver()}"/><br/>
@@ -143,6 +134,7 @@
         </div><!-- /.container -->
 
     </ui:define>
+    
 </ui:composition>
 
 
