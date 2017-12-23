@@ -108,7 +108,47 @@
         
                         <h1>Dirección del Evento</h1>
                         <div id="map" style="width: 500px; height: 500px;"></div>
-                    </div>  
+                    </div>
+                        
+                        <div class="fotos">
+                        
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script>
+            /*<![CDATA[*/
+            /*
+             * Le he añadido ajax para las llamada y asi con poco esfuerzo tenemos implementado en el proyecto otra
+             * tecnologia que seguro que lo puntua positivamente
+             * 
+             * PARA LA MEMORIA:
+             * Me he dado de cabezasos porque al ser un jsf (Xhtml) los & del link para las llamada a las api peta con un error de parsing noseqe..
+             * luego tmb peta en el < (menor que) del for ya que lo capta como una etiqueta, tmb da el mismo error de parsing
+             * 
+             * La solucion fue añadirle el CDATA del principio para que no parse este trozo del contenido..
+             * tamaños -> https://stackoverflow.com/questions/1803310/how-to-get-static-image-url-from-flickr-url
+             */
+            $(document).ready(function () {                
+                $.ajax({
+                    url: "http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=0d8792b0c196edc5ad03a8b89c0bd340&tags=flower&per_page=3&format=json&nojsoncallback=1&extras=url_m"
+                }).done(function (objJson) {
+                    mostrarFotos(objJson);
+                });
+
+                function mostrarFotos(flickr) {
+                    for (var i = 0; i < flickr.photos.photo.length; i++) {
+                        foto = flickr.photos.photo[i];
+                        url = "http://www.flickr.com/photos/" + foto.owner + "/" + foto.id;
+                        $("#mostrar").append('<a href="' + url + '">' + '<img alt="' + foto.title + '"src="' + foto.url_m + '" />' + '</a>');
+                    }
+                }                
+            });
+            /*]]>*/
+        </script>
+        
+                        <h1>Fotos del Evento</h1>
+                        <div id="mostrar"></div>
+                    </div>
+                        
+                        
                     </div>
                       
 

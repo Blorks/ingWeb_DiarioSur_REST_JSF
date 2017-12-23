@@ -651,15 +651,14 @@ public class DiarioSurBean implements Serializable {
     }
     
     private double calcularDistanciaHastaEvento(double latitudEvento, double longitudEvento, double latitudUsuario, double longitudUsuario){
-        double radioTierra = 6371;
+        double radioTierra = 6371.137;
         double dLat = Math.toRadians(latitudUsuario - latitudEvento);
         double dLng = Math.toRadians(longitudUsuario - longitudEvento);
         
         double sindLat = Math.sin(dLat / 2);
         double sindLng = Math.sin(dLng / 2);
         
-        double val = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
-                * Math.cos(Math.toRadians(latitudEvento)) + Math.cos(Math.toRadians(latitudUsuario));
+        double val = Math.pow(sindLat, 2) + Math.cos(Math.toRadians(latitudEvento)) * Math.pow(sindLng, 2) + Math.cos(Math.toRadians(latitudUsuario));
         double val2 = 2 * Math.atan2(Math.sqrt(val), Math.sqrt(1 - val));
         double distancia = radioTierra * val2;
         
