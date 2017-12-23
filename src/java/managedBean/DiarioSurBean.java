@@ -42,8 +42,8 @@ public class DiarioSurBean implements Serializable {
      * Creates a new instance of diarioSurBean
      */
     private Usuario usuario = new Usuario();
-    private double usuarioLatitud;
-    private double usuarioLongitud;
+    private double usuarioLatitud = 36.752286;
+    private double usuarioLongitud = -4.419255; //mi casa
     
     private Evento evento = new Evento();
     private int edit = 0;

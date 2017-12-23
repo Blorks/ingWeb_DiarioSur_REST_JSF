@@ -7,8 +7,9 @@
     </h:head>
     <h:body>
         <h:form>
-        Introduzca la distancia maxima: <h:inputText value="#{diarioSurBean.diaBusqueda}"/>
-        <h:commandButton value="Buscar" action="#{diarioSurBean.irEventosFiltradosDireccion()}"/>
+        Introduzca la distancia maxima: <h:inputText value="#{diarioSurBean.distMaxima}"/>
+        <h:commandButton value="Buscar" action="#{diarioSurBean.irEventosFiltradosDireccion()}"/><br/>
+        <h:commandButton value="Volver" action="#{diarioSurBean.volver()}"/><br/>
         </h:form>
     </h:body>
 </html>
