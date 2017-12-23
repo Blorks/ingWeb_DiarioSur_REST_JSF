@@ -42,8 +42,8 @@ public class DiarioSurBean implements Serializable {
      * Creates a new instance of diarioSurBean
      */
     private Usuario usuario = new Usuario();
-    private double usuarioLatitud = 36.752286;
-    private double usuarioLongitud = -4.419255; //mi casa
+    private double usuarioLatitud = 0.0;
+    private double usuarioLongitud = 0.0;
     
     private Evento evento = new Evento();
     private int edit = 0;
@@ -82,6 +82,11 @@ public class DiarioSurBean implements Serializable {
     public void setDiaBusqueda(String diaBusqueda) {
         this.diaBusqueda = diaBusqueda;
     }
+
+    
+    
+    
+    
     
     @PostConstruct
     public void init(){
@@ -756,7 +761,7 @@ public class DiarioSurBean implements Serializable {
         
         double val = Math.pow(sindLat, 2) + Math.cos(Math.toRadians(latitudEvento)) * Math.pow(sindLng, 2) + Math.cos(Math.toRadians(latitudUsuario));
         double val2 = 2 * Math.atan2(Math.sqrt(val), Math.sqrt(1 - val));
-        double distancia = radioTierra * val2;
+        double distancia = (radioTierra * val2);
         
         return distancia;
     }
