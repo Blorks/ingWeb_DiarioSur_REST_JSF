@@ -23,10 +23,15 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletException;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 
@@ -44,20 +49,46 @@ public class DiarioSurBean implements Serializable {
     private Usuario usuario = new Usuario();
     private double usuarioLatitud = 0.0;
     private double usuarioLongitud = 0.0;
-    
+
     private Evento evento = new Evento();
     private int edit = 0;
-    
+
     private Dateev fecha = new Dateev();
     private String listaDias = "";
     private String[] arFecha;
-    
+
     private String tagsEvento = "";
     private String tagsUsuario = "";
-    
+
     private String diaBusqueda;
     private int distMaxima;
     private String precioMax;
+
+    private String usuarioFoto;
+
+    public void rrssLogin() {
+        try {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = facesContext.getExternalContext();
+            Map params = externalContext.getRequestParameterMap();
+
+            if (params.size() > 0) {
+                usuario = new Usuario();
+                usuario.setEmail(params.get("email").toString());
+                System.out.println(usuario.getEmail());
+                logIn();
+                usuarioFoto = params.get("picture").toString();
+            }
+        }catch (Exception e){}
+    }
+
+    public String getUsuarioFoto() {
+        return usuarioFoto;
+    }
+
+    public void setUsuarioFoto(String usuarioFoto) {
+        this.usuarioFoto = usuarioFoto;
+    }
 
     public String getPrecioMax() {
         return precioMax;
@@ -74,7 +105,7 @@ public class DiarioSurBean implements Serializable {
     public void setDistMaxima(int distMaxima) {
         this.distMaxima = distMaxima;
     }
-    
+
     public String getDiaBusqueda() {
         return diaBusqueda;
     }
@@ -83,13 +114,8 @@ public class DiarioSurBean implements Serializable {
         this.diaBusqueda = diaBusqueda;
     }
 
-    
-    
-    
-    
-    
     @PostConstruct
-    public void init(){
+    public void init() {
         usuario.setRol("");
     }
 
@@ -156,16 +182,12 @@ public class DiarioSurBean implements Serializable {
     public void setUsuarioLongitud(double usuarioLongitud) {
         this.usuarioLongitud = usuarioLongitud;
     }
-    
-    
-
-    
 
     public DiarioSurBean() {
     }
 
     //METODOS REFERENTES A LOS EVENTOS
-    public int ultimoIDEventoIncrementado(){
+    public int ultimoIDEventoIncrementado() {
         int id = 0;
         clienteEventos cliente = new clienteEventos();
         Response r = cliente.ultimoIDInsertado_XML(Response.class);
@@ -176,10 +198,10 @@ public class DiarioSurBean implements Serializable {
             List<Evento> eventos = r.readEntity(genericType);
             id = eventos.get(0).getId() + 1;
         }
-        
+
         return id;
     }
-    
+
     public List<Evento> mostrarTodosLosEventos() {
         clienteEventos cliente = new clienteEventos();
         Response r = cliente.findAll_XML(Response.class);
@@ -209,7 +231,7 @@ public class DiarioSurBean implements Serializable {
 
         return null;
     }
-    
+
     public List<Evento> mostrarTodosLosEventosNoRevisados() {
         clienteEventos cliente = new clienteEventos();
         Response r = cliente.encontrarEventosNoRevisados_XML(Response.class);
@@ -229,53 +251,53 @@ public class DiarioSurBean implements Serializable {
         clienteEventos cliente = new clienteEventos();
         cliente.edit_XML(evento, evento.getId().toString());
     }
-    
-    private int actualizarIDEvento(){
+
+    private int actualizarIDEvento() {
         int id = 0;
         clienteEventos cliente = new clienteEventos();
         Response r = cliente.ultimoIDInsertado_XML(Response.class);
-        
-        if (r.getStatus() == 200){
-            GenericType<List<Evento>> genericType = new GenericType<List<Evento>>(){};
+
+        if (r.getStatus() == 200) {
+            GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
+            };
             List<Evento> lista = r.readEntity(genericType);
-            
+
             id = lista.get(0).getId();
         }
         return id;
     }
 
     public String nuevoEvento() {
-        if(edit == 0){
+        if (edit == 0) {
             clienteEventos cliente = new clienteEventos();
             clienteDateev clienteFecha = new clienteDateev();
 
-        
             //Adjunto el usuario creador
             evento.setUsuarioId(usuario);
 
             //Adjunto la fecha del evento
             adjuntarFecha();
-        
+
             //Adjunto si está revisado o no
-            if(esPeriodista()){
+            if (esPeriodista()) {
                 evento.setEstarevisado(1);
-            }else{
+            } else {
                 evento.setEstarevisado(0);
             }
 
             cliente.create_XML(evento);
             evento.setId(actualizarIDEvento());
-        
+
             //Adjunto tags al evento
             adjuntarTagsEvento();
-        
+
             fecha.setEventoId(actualizarIDEvento());
             clienteFecha.edit_XML(fecha, fecha.getId().toString());
-        
+
             // reset variables
             fecha = new Dateev();
             evento = new Evento();
-        }else{
+        } else {
             editarEvento();
         }
 
@@ -285,13 +307,12 @@ public class DiarioSurBean implements Serializable {
     public String borrarEvento(Evento ev) {
         clienteEventos cliente = new clienteEventos();
         clienteDateev clienteFecha = new clienteDateev();
-        
+
         clienteFecha.remove(ev.getDateevId().getId().toString());
         cliente.remove(ev.getId().toString());
-        
+
         return "todoloseventos.xhtml";
     }
-
 
     public List<Evento> filtrarEventosDeUsuario() {
         clienteEventos cliente = new clienteEventos();
@@ -307,15 +328,15 @@ public class DiarioSurBean implements Serializable {
 
         return null;
     }
-    
-    public String validarEvento(Evento ev){
+
+    public String validarEvento(Evento ev) {
         clienteEventos cliente = new clienteEventos();
         Evento eventoTemporal = ev;
-        
+
         eventoTemporal.setEstarevisado(1);
-        
+
         cliente.edit_XML(eventoTemporal, ev.getId().toString());
-        
+
         return "validarEvento.xhtml";
     }
 
@@ -324,18 +345,20 @@ public class DiarioSurBean implements Serializable {
         clienteTagUsuario cliente = new clienteTagUsuario();
         clienteTag cliente2 = new clienteTag();
         List<Tag> tagsUsuarioTemp = new ArrayList<>();
-        
+
         Response r = cliente.encontrarTagUser_XML(Response.class, usuario.getId().toString());
-        
+
         if (r.getStatus() == 200) {
-            GenericType<List<Tagusuario>> genericType = new GenericType<List<Tagusuario>>(){};
-            GenericType<List<Tag>> genericType2 = new GenericType<List<Tag>>(){};
+            GenericType<List<Tagusuario>> genericType = new GenericType<List<Tagusuario>>() {
+            };
+            GenericType<List<Tag>> genericType2 = new GenericType<List<Tag>>() {
+            };
             List<Tagusuario> lista = r.readEntity(genericType);
-            
-            for(int i=0; i<lista.size(); i++){
+
+            for (int i = 0; i < lista.size(); i++) {
                 r = cliente2.encontrarTagPorNombre_XML(Response.class, lista.get(i).getTagId().getNombre());
-                
-                if(r.getStatus() == 200){
+
+                if (r.getStatus() == 200) {
                     List<Tag> lista2 = r.readEntity(genericType2);
                     tagsUsuarioTemp.add(lista2.get(0));
                 }
@@ -348,113 +371,116 @@ public class DiarioSurBean implements Serializable {
         clienteTagevento cliente = new clienteTagevento();
         clienteTag cliente2 = new clienteTag();
         List<Tag> tagsEventoTemp = new ArrayList<>();
-        
+
         Response r = cliente.encontrarTagEv_XML(Response.class, evento.getId().toString());
         if (r.getStatus() == 200) {
-            GenericType<List<Tagevento>> genericType = new GenericType<List<Tagevento>>(){};
-            GenericType<List<Tag>> genericType2 = new GenericType<List<Tag>>(){};
+            GenericType<List<Tagevento>> genericType = new GenericType<List<Tagevento>>() {
+            };
+            GenericType<List<Tag>> genericType2 = new GenericType<List<Tag>>() {
+            };
             List<Tagevento> lista = r.readEntity(genericType);
-            
-            for(int i=0; i<lista.size(); i++){
+
+            for (int i = 0; i < lista.size(); i++) {
                 r = cliente2.encontrarTagPorNombre_XML(Response.class, lista.get(i).getTagId().getNombre());
-                
-                if(r.getStatus() == 200){
+
+                if (r.getStatus() == 200) {
                     List<Tag> lista2 = r.readEntity(genericType2);
                     tagsEventoTemp.add(lista2.get(0));
                 }
             }
         }
-        return tagsEventoTemp;     
+        return tagsEventoTemp;
     }
-    
-    private Tag crearTag(String strTag){
+
+    private Tag crearTag(String strTag) {
         clienteTag cliente = new clienteTag();
         Tag tag = new Tag();
         tag.setNombre(strTag);
-        
+
         cliente.create_XML(tag);
-        
+
         Response r = cliente.encontrarTagPorNombre_XML(Response.class, strTag);
-        if (r.getStatus() == 200){
-            GenericType<List<Tag>> genericType = new GenericType<List<Tag>>(){};
+        if (r.getStatus() == 200) {
+            GenericType<List<Tag>> genericType = new GenericType<List<Tag>>() {
+            };
             List<Tag> lista = r.readEntity(genericType);
-            
+
             tag = lista.get(0);
         }
 
         return tag;
     }
-    
-    public void adjuntarTagsEvento(){
+
+    public void adjuntarTagsEvento() {
         clienteTagevento cliente = new clienteTagevento();
         String[] partes = tagsEvento.split(",");
         String sinEspacio;
         Tag tagCreado;
         Tagevento tagEv = new Tagevento();
 
-        
-        for(int i=0;i<partes.length; i++){
+        for (int i = 0; i < partes.length; i++) {
             sinEspacio = partes[i].trim().toLowerCase();
             tagCreado = crearTag(sinEspacio);
-            
+
             tagEv.setEventoId(evento);
             tagEv.setTagId(tagCreado);
-            
+
             cliente.create_XML(tagEv);
-        }  
+        }
     }
-    
-    public void adjuntarTagsUsuario(){
+
+    public void adjuntarTagsUsuario() {
         clienteTagUsuario cliente = new clienteTagUsuario();
         String[] partes = tagsUsuario.split(",");
         String sinEspacio;
         Tag tagCreado;
         Tagusuario tagUs = new Tagusuario();
 
-        
-        for(int i=0;i<partes.length; i++){
+        for (int i = 0; i < partes.length; i++) {
             sinEspacio = partes[i].trim().toLowerCase();
             tagCreado = crearTag(sinEspacio);
-            
+
             tagUs.setUsuarioId(usuario);
             tagUs.setTagId(tagCreado);
-            
+
             cliente.create_XML(tagUs);
-        } 
+        }
     }
 
     public String eliminarTagDeUsuario(Tag tagUsuario) {
         clienteTag cliente = new clienteTag();
         clienteTagUsuario cliente2 = new clienteTagUsuario();
-        
+
         Response r = cliente2.encontrarTagUserPorTagyUsuario_XML(Response.class, tagUsuario.getId().toString(), usuario.getId().toString());
-        if (r.getStatus() == 200){
-            GenericType<List<Tagusuario>> genericType = new GenericType<List<Tagusuario>>(){};
+        if (r.getStatus() == 200) {
+            GenericType<List<Tagusuario>> genericType = new GenericType<List<Tagusuario>>() {
+            };
             List<Tagusuario> lista = r.readEntity(genericType);
-            
-            for(int i=0; i<lista.size(); i++){
+
+            for (int i = 0; i < lista.size(); i++) {
                 cliente2.remove(lista.get(i).getId().toString());
             }
-            
+
             cliente.remove(tagUsuario.getId().toString());
         }
-        
+
         return "perfil";
     }
 
     public String eliminarTagEvento(Tag tagEvento) {
         clienteTag cliente = new clienteTag();
         clienteTagevento cliente2 = new clienteTagevento();
-        
+
         Response r = cliente2.encontrarTagEvPorTagyEvento_JSON(Response.class, tagEvento.getId().toString(), evento.getId().toString());
-        if (r.getStatus() == 200){
-            GenericType<List<Tagevento>> genericType = new GenericType<List<Tagevento>>(){};
+        if (r.getStatus() == 200) {
+            GenericType<List<Tagevento>> genericType = new GenericType<List<Tagevento>>() {
+            };
             List<Tagevento> lista = r.readEntity(genericType);
-            
-            for(int i=0; i<lista.size(); i++){
+
+            for (int i = 0; i < lista.size(); i++) {
                 cliente2.remove(lista.get(i).getId().toString());
             }
-            
+
             cliente.remove(tagEvento.getId().toString());
         }
 
@@ -467,34 +493,35 @@ public class DiarioSurBean implements Serializable {
     }
 
     //METODOS REFERENTES A LAS FECHAS
-    public String mostrarFechaDeEvento(Evento ev){
+    public String mostrarFechaDeEvento(Evento ev) {
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-        
-        if(ev.getDateevId().getEsunico() == 1){
+
+        if (ev.getDateevId().getEsunico() == 1) {
             return formato.format(ev.getDateevId().getDia());
-        }else if(ev.getDateevId().getTodoslosdias() == 1){
+        } else if (ev.getDateevId().getTodoslosdias() == 1) {
             return formato.format(ev.getDateevId().getDesde()) + " - " + formato.format(ev.getDateevId().getHasta());
-        }else{
+        } else {
             arFecha = ev.getDateevId().getListadias().trim().split(",");
-            
+
             return arFecha[0] + " y varias fechas más.";
         }
     }
-    
+
     private void crearFecha() {
         clienteDateev cliente = new clienteDateev();
         cliente.create_XML(fecha);
     }
-    
-    private int actualizarIDFecha(){
+
+    private int actualizarIDFecha() {
         int id = 0;
         clienteDateev cliente = new clienteDateev();
         Response r = cliente.ultimoIDInsertado_XML(Response.class);
-        
+
         if (r.getStatus() == 200) {
-            GenericType<List<Dateev>> genericType = new GenericType<List<Dateev>>(){};
+            GenericType<List<Dateev>> genericType = new GenericType<List<Dateev>>() {
+            };
             List<Dateev> lista = r.readEntity(genericType);
-            
+
             id = lista.get(0).getId();
         }
         return id;
@@ -590,7 +617,7 @@ public class DiarioSurBean implements Serializable {
         fecha.setEsunico(1);
         fecha.setTodoslosdias(0);
         fecha.setVariosdias(0);
-        
+
         return "subirevento.xhtml";
     }
 
@@ -624,6 +651,7 @@ public class DiarioSurBean implements Serializable {
     }
 
     public String logout() {
+        usuario = new Usuario();
         usuario.setEmail("");
 
         return "index";
@@ -632,19 +660,16 @@ public class DiarioSurBean implements Serializable {
     public boolean esPeriodista() {
         return usuario.getRol().equals("Periodista");
     }
-    
+
     //FUNCIONES MOSTRAR EVENTOS POR FILTROS Y ORDEN ALVARO
-    
-    public String irEventosFiltradosFecha()
-    {
+    public String irEventosFiltradosFecha() {
         return "eventosFiltradosFecha.xhtml";
     }
-    
-    public String irIntroducirFechaBusqueda()
-    {
+
+    public String irIntroducirFechaBusqueda() {
         return "introducirFechaBusqueda.xhtml";
     }
-    
+
     public List<Evento> mostrarEventosFiltradosPorFecha() {
         clienteEventos cliente = new clienteEventos();
         Response r = cliente.encontrarEventosPorDia_XML(Response.class, diaBusqueda);
@@ -653,33 +678,29 @@ public class DiarioSurBean implements Serializable {
             GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
             };
             List<Evento> eventos = r.readEntity(genericType);
-            
+
             return eventos;
         }
 
         return null;
     }
-    
-    public String irEventosFiltradosDireccion()
-    {
+
+    public String irEventosFiltradosDireccion() {
         return "eventosFiltradosDireccion.xhtml";
     }
-    
-    public String irIntroducirDistanciaMaxima()
-    {
+
+    public String irIntroducirDistanciaMaxima() {
         return "introducirDistanciaMaxima.xhtml";
     }
-    
-    public String irEventosFiltradosPrecio()
-    {
+
+    public String irEventosFiltradosPrecio() {
         return "eventosFiltradosPrecio.xhtml";
     }
-    
-    public String irIntroducirPrecioMaximo()
-    {
+
+    public String irIntroducirPrecioMaximo() {
         return "introducirPrecioMaximo.xhtml";
     }
-    
+
     public List<Evento> mostrarEventosFiltradosPorPrecio() {
         clienteEventos cliente = new clienteEventos();
         Response r = cliente.encontrarEventoByPrecioMax_XML(Response.class, precioMax);
@@ -687,18 +708,17 @@ public class DiarioSurBean implements Serializable {
             GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
             };
             List<Evento> eventos = r.readEntity(genericType);
-            
+
             return eventos;
         }
 
         return null;
     }
-    
-    public String irEventosOrdenadosAlfabeticamente()
-    {
+
+    public String irEventosOrdenadosAlfabeticamente() {
         return "eventosOrdenadosAlfabeticamente.xhtml";
     }
-    
+
     public List<Evento> mostrarEventosOrdenadosAlfabeticamente() {
         clienteEventos cliente = new clienteEventos();
         Response r = cliente.ordenarEventosAlfabeticamente_XML(Response.class);
@@ -706,18 +726,17 @@ public class DiarioSurBean implements Serializable {
             GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
             };
             List<Evento> eventos = r.readEntity(genericType);
-            
+
             return eventos;
         }
 
         return null;
     }
-    
-    public String irEventosOrdenadosFecha()
-    {
+
+    public String irEventosOrdenadosFecha() {
         return "eventosOrdenadosFecha.xhtml";
     }
-    
+
     public List<Evento> mostrarEventosOrdenadosPorFecha() { //FALTA TERMINAR
         clienteEventos cliente = new clienteEventos();
         Response r = cliente.ordenarEventosPrecio_XML(Response.class);
@@ -725,18 +744,17 @@ public class DiarioSurBean implements Serializable {
             GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
             };
             List<Evento> eventos = r.readEntity(genericType);
-            
+
             return eventos;
         }
 
         return null;
     }
-    
-    public String irEventosOrdenadosPrecio()
-    {
+
+    public String irEventosOrdenadosPrecio() {
         return "eventosOrdenadosPrecio.xhtml";
     }
-    
+
     public List<Evento> mostrarEventosOrdenadosPorPrecio() {
         clienteEventos cliente = new clienteEventos();
         Response r = cliente.ordenarEventosPrecio_XML(Response.class);
@@ -744,47 +762,47 @@ public class DiarioSurBean implements Serializable {
             GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
             };
             List<Evento> eventos = r.readEntity(genericType);
-            
+
             return eventos;
         }
 
         return null;
     }
-    
-    private double calcularDistanciaHastaEvento(double latitudEvento, double longitudEvento, double latitudUsuario, double longitudUsuario){
+
+    private double calcularDistanciaHastaEvento(double latitudEvento, double longitudEvento, double latitudUsuario, double longitudUsuario) {
         double radioTierra = 6371.137;
-        double dLat = Math.toRadians(latitudUsuario - latitudEvento)/2;
-        double dLng = Math.toRadians(longitudUsuario - longitudEvento)/2;
-        
+        double dLat = Math.toRadians(latitudUsuario - latitudEvento) / 2;
+        double dLng = Math.toRadians(longitudUsuario - longitudEvento) / 2;
+
         double sindLat = Math.sin(dLat);
         double sindLng = Math.sin(dLng);
-        
+
         double val = Math.pow(sindLat, 2) + Math.cos(Math.toRadians(latitudEvento)) * Math.pow(sindLng, 2) * Math.cos(Math.toRadians(latitudUsuario));
         val = Math.sqrt(val);
         double val2 = 2 * radioTierra * Math.asin(val);
-        
+
         return val2;
     }
-    
-    public List<Evento> mostrarEventosFiltradosPorDistancia(){
+
+    public List<Evento> mostrarEventosFiltradosPorDistancia() {
         clienteEventos cliente = new clienteEventos();
         List<Evento> listaTemp = new ArrayList<>();
         Response r = cliente.findAll_XML(Response.class);
-        
+
         if (r.getStatus() == 200) {
             GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
             };
             List<Evento> eventos = r.readEntity(genericType);
 
-            for(int i=0; i<eventos.size(); i++){
+            for (int i = 0; i < eventos.size(); i++) {
                 double distancia = calcularDistanciaHastaEvento(eventos.get(i).getLatitud(), eventos.get(i).getLongitud(), usuarioLatitud, usuarioLongitud);
-                if(distancia <= distMaxima){
+                if (distancia <= distMaxima) {
                     listaTemp.add(eventos.get(i));
                 }
             }
         }
-        
+
         return listaTemp;
-        
+
     }
 }

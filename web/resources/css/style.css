@@ -257,13 +257,13 @@ a:hover{
     color: #fff;
     background-color:#496ebc 
 }
-.btn-tw{
+.btn-g{
     color: #fff;
-    background-color:#55acee;
+    background-color: #DC4A38;
 }
-.btn-tw:hover{
+.btn-g:hover{
     color: #fff;
-    background-color:#59b5fa;
+    background-color: #D8776E;
 }
 @media(max-width:768px){
     #login-dp{
