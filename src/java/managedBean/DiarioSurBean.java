@@ -74,6 +74,7 @@ public class DiarioSurBean implements Serializable {
 
             if (params.size() > 0) {
                 usuario = new Usuario();
+                usuario.setRol("");
                 usuario.setEmail(params.get("email").toString());
                 System.out.println(usuario.getEmail());
                 logIn();
