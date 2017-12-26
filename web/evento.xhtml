@@ -14,7 +14,7 @@
             <div class="row white-evento">
                 <!-- HEADER -->
                 <div class="evento-header">
-                    <img style="width:100%" src="http://www.limontasport.com/wp-content/uploads/2016/03/limonta-sport-slider-1-2-1800x720.jpg" />
+                    <img id="banner_tag" style="width:100%" src="http://www.limontasport.com/wp-content/uploads/2016/03/limonta-sport-slider-1-2-1800x720.jpg" />
                     <div class="triangulo">
                         <h:inputText id="latitudOculta" class="hidden" value="#{diarioSurBean.evento.latitud}"/>
                         <h:inputText id="longitudOculta" class="hidden" value="#{diarioSurBean.evento.longitud}"/>
@@ -61,6 +61,7 @@
 
                             <script type="text/javascript">
                                 $(document).ready(function () {
+                                    var tag = "#{diarioSurBean.encontrarUnTagsDeEvento().nombre}";
                                     var latitud = $('input[id$="latitudOculta"]').val();
                                     var longitud = $('input[id$="longitudOculta"]').val();
                                     var direccionFisica = $('input[id$="direccionOculta"]').val();
@@ -114,7 +115,7 @@
                                      * tamaños -> https://stackoverflow.com/questions/1803310/how-to-get-static-image-url-from-flickr-url
                                      */
                                     $.ajax({
-                                        url: "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=0d8792b0c196edc5ad03a8b89c0bd340&tags=flower&per_page=3&format=json&nojsoncallback=1&extras=url_m"
+                                        url: "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=0d8792b0c196edc5ad03a8b89c0bd340&tags=" + tag + "&per_page=1&format=json&nojsoncallback=1&extras=url_m"
                                     }).done(function (objJson) {
                                         mostrarFotos(objJson);
                                     });
@@ -124,22 +125,13 @@
                                         for (var i = 0; i < flickr.photos.photo.length; i++) {
                                             foto = flickr.photos.photo[i];
                                             url = "http://www.flickr.com/photos/" + foto.owner + "/" + foto.id;
-                                            $("#mostrar").append('<a href="' + url + '">' + '<img alt="' + foto.title + '"src="' + foto.url_m + '" />' + '</a>');
+                                            $("#banner_tag").attr("src",foto.url_m);
                                         }
                                     }
                                     /*]]>*/
                                 });
                             </script>
-
-
-
-                            <h1>Dirección del Evento</h1>
                             <div id="map" style="height: 300px;"></div>
-                        </div>
-
-                        <div class="fotos">
-                            <h1>Fotos del Evento</h1>
-                            <div id="mostrar"></div>
                         </div>
 
 

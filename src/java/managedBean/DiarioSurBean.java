@@ -406,6 +406,10 @@ public class DiarioSurBean implements Serializable {
         }
         return tagsEventoTemp;
     }
+    
+    public Tag encontrarUnTagsDeEvento(){
+        return encontrarTagsDeEvento().size() > 0? encontrarTagsDeEvento().get(0):null;
+    }
 
     private Tag crearTag(String strTag) {
         clienteTag cliente = new clienteTag();
