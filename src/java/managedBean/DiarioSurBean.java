@@ -631,7 +631,14 @@ public class DiarioSurBean implements Serializable {
         fecha.setEsunico(1);
         fecha.setTodoslosdias(0);
         fecha.setVariosdias(0);
-
+        
+        double precioTemp = 0.0;
+        
+        evento.setTitulo("");
+        evento.setSubtitulo("");
+        evento.setPrecio(precioTemp);
+        evento.setDescripcion("");
+        
         return "subirevento.xhtml";
     }
 

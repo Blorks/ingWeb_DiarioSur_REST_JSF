@@ -9,7 +9,6 @@
                 xmlns:t="http://xmlns.jcp.org/jsf/passthrough">
 
     <ui:define name="contenido">
-
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -193,53 +192,12 @@
                                         </div>
                                         <div class="tab-pane" role="tabpanel" id="step3">
                                             <div class="step33">
-                                                <h5><strong>Subir archivo</strong></h5>
-                                                <hr/>
-                                                <div class="row mar_ned">
+                                                <h:inputText id="latitudOculta" class="hidden" value="#{diarioSurBean.evento.latitud}"/>
+                                                <h:inputText id="longitudOculta" class="hidden" value="#{diarioSurBean.evento.longitud}"/>
+                                                <h:inputText id="direccionOculta" class="hidden" value="#{diarioSurBean.evento.direccionfisica}"/>
 
-                                                </div>
-                                                <div class="row mar_ned">
-                                                    <div class="col-md-4">
-
-                                                    </div>
-                                                    <div class="col-md-8 col-xs-9">
-                                                        <div class="row">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mar_ned">
-                                                    <div class="col-md-12">
-
-                                                        <!-- TODO pre visualizar la img -->
-                                                        <div class="col-md-4">
-                                                            <div class="image-preview-div"></div>
-                                                        </div>
-                                                        <div class="col-md-8">                                                  
-                                                            <!-- image-preview-filename input [CUT FROM HERE]-->
-                                                            <div class="input-group image-preview">
-                                                                <input type="text" class="form-control image-preview-filename" disabled="disabled" /> <!-- don't give a name === doesn't send on POST/GET -->
-                                                                <span class="input-group-btn">
-                                                                    <!-- image-preview-clear button -->
-                                                                    <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
-                                                                        <span class="glyphicon glyphicon-remove"></span> Limpiar
-                                                                    </button>
-                                                                    <!-- image-preview-input -->
-                                                                    <div class="btn btn-default image-preview-input">
-                                                                        <span class="glyphicon glyphicon-folder-open"></span>
-                                                                        <span class="image-preview-input-title">Subir archivo</span>
-                                                                        <input type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/> <!-- rename it -->
-                                                                    </div>
-                                                                </span>
-                                                            </div><!-- /input-group image-preview [TO HERE]--> 
-                                                        </div>
-                                                        <!-- /TODO -->
-
-
-                                                    </div>
-                                                </div>
-                                                <div class="row mar_ned">
-
-                                                </div>
+                                                <h5>Dirección del evento</h5>
+                                                <div id="map" style="width: 500px; height: 500px;"></div>
                                             </div>
                                             <ul class="list-inline pull-right">
                                                 <li><button type="button" class="btn btn-default prev-step">Atrás</button></li>
@@ -262,6 +220,7 @@
                                                                 <p id="mostrar_ev_subtitulo"></p>
                                                                 <p id="mostrar_ev_descripcion"></p>
                                                                 <p id="mostrar_ev_precio"></p>
+                                                                <p id="mostrar_ev_direccion"></p>
                                                                 <p id="mostrar_diaunico"></p>
                                                                 <p><span id="mostrar_ev_fecha_desde"></span> - <span id="mostrar_ev_fecha_hasta"></span></p>
                                                                 <p id="mostrar_ev_lista_fechas"></p>
@@ -295,7 +254,72 @@
             </div>
         </div>
     </ui:define>
+    
+    <ui:define name="mapa">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyAb7jwWqPc7TD6J69V6dZS_9lucF5CxkF8"></script>
+        <script>
+            $(document).ready(function () {
+                var latitud = 41.652393;
+                var longitud = 1.691895;
+                var mapDiv = document.getElementById('map');
+                var latlng = new google.maps.LatLng(latitud, longitud);
+                var options = {
+                    center: latlng,
+                    zoom: 8,
+                    mapTypeControl: false,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                            // mas opciones en https://developers.google.com/maps/documentation/javascript/reference?hl=es#MapOptions
+                };
+                var map = new google.maps.Map(mapDiv, options);
+                var geocoder = new google.maps.Geocoder();
 
+                marca(latitud, longitud, 'titulo al poner el raton encima de la marca', 'contenido al clicar en la marca');
+
+                // recoge la lat y long al clicar el mapa
+                // importante que esté debajo de el evento marca(...) no antes
+                google.maps.event.addListener(map, 'click', function (e) {
+                    // preparado para el proyecto ponerlo en inputs hidden
+                    $('input[id$="latitudOculta"]').val(e.latLng.lat());
+                    $('input[id$="longitudOculta"]').val(e.latLng.lng());
+
+                    // devuelve direccion
+                    geocoder.geocode({
+                        'latLng': e.latLng
+                    }, function (r, status) {
+                        if (status === google.maps.GeocoderStatus.OK) {
+                            if (r[0]) {
+                                $('input[id$="direccionOculta"]').val(r[0].formatted_address);
+                            }
+                        }
+                    });
+                });
+
+                function marca(lat, long, tit, cont) {
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(lat, long),
+                        map: map,
+                        title: tit
+                    });
+
+                    // evento de clicar encima de la marca
+                    google.maps.event.addListener(marker, 'click', function (e) {
+                        console.log(e);
+                        var infowindow = new google.maps.InfoWindow({
+                            content: cont
+                        });
+                        infowindow.open(map, marker);
+                    });
+                }
+
+                function showPosition(position) {
+                    map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+                    marca(position.coords.latitude, position.coords.longitude, 'posicion actual', 'contenido actualizado');
+                }
+            });
+        </script>
+    </ui:define>
+    
     <ui:define name="script-individual">
         <script>
             $(document).ready(function () {
@@ -387,6 +411,7 @@
                     $("#mostrar_ev_subtitulo").html($('input[id$="ev_subtitulo"]').val());
                     $("#mostrar_ev_descripcion").html($('textarea[id$="ev_descripcion"]').val());
                     $("#mostrar_ev_precio").html($('input[id$="ev_precio"]').val() + "€");
+                    $("#mostrar_ev_direccion").html($('input[id$="direccionOculta"]').val());
 
                     $("#mostrar_diaunico").html($('input[id$="diaunico"]').val());
                     $("#mostrar_ev_fecha_desde").html($('input[id$="ev_fecha_desde"]').val());
@@ -440,7 +465,7 @@
                         type: "button",
                         text: 'x',
                         id: 'close-preview',
-                        style: 'font-size: initial;',
+                        style: 'font-size: initial;'
                     });
                     closebtn.attr("class", "close pull-right");
                     // Set the popover default content
@@ -481,7 +506,7 @@
                             img.attr('src', e.target.result);
                             //$(".image-preview").attr("data-content",$(img)[0].outerHTML).popover("show");
                             $('.image-preview-div').html((img)[0].outerHTML);
-                        }
+                        };
                         reader.readAsDataURL(file);
                     });
                 });
@@ -525,7 +550,8 @@
 
                 return false;
             });
+            
+            
         </script>
     </ui:define>
-
 </ui:composition>
