@@ -250,6 +250,17 @@ public class DiarioSurBean implements Serializable {
 
     public void editarEvento() {
         clienteEventos cliente = new clienteEventos();
+        clienteDateev cliente2 = new clienteDateev();
+        
+        String idFechaTemp = evento.getDateevId().getId().toString();
+        
+        evento.setDateevId(null);
+        cliente.edit_XML(evento, evento.getId().toString());
+        
+        cliente2.remove(idFechaTemp);
+        
+        adjuntarFecha();
+        
         cliente.edit_XML(evento, evento.getId().toString());
     }
 
@@ -296,13 +307,17 @@ public class DiarioSurBean implements Serializable {
             clienteFecha.edit_XML(fecha, fecha.getId().toString());
 
             // reset variables
-            fecha = new Dateev();
+            evento = null;
+            
             evento = new Evento();
+            
+            return "index";
         } else {
             editarEvento();
-        }
-
-        return "index";
+            edit = 0;
+            
+            return "todoloseventos.xhtml";
+        } 
     }
 
     public String borrarEvento(Evento ev) {
@@ -599,8 +614,6 @@ public class DiarioSurBean implements Serializable {
     }
 
     public String irMisEvento() {
-        /*tagUs = new AdjuntarTagUser();
-        usuario = logginUsuario;*/
         return "perfil.xhtml";
     }
 
