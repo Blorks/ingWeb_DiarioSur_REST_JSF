@@ -5,34 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
-    
-    <script src="resources/hello.all.js"></script>
-        <script>
-            hello.init({
-                google: '612950088841-a7jdgmhbmfjh3h6ah9h1n774mfg5i9ue.apps.googleusercontent.com',
-                facebook: '2034071323504737'
-            },
-                    {
-                        scope: 'email',
-                        redirect_uri: 'http://localhost:54747/probando_OAuth2/'
-                    });
-            hello.on('auth.login', function (auth) {
-                hello(auth.network).api('/me').then(function (resp) {
-                    var lab = document.createElement("div");
-                    lab.id = "pic_and_greet";
-                    lab.innerHTML = '<img src="' + resp.thumbnail + '" /><br />' + resp.name + '<br />' + resp.email;
-                    document.body.appendChild(lab);
-                });
-            });
 
-            // remove the greeting when we log out
-
-            hello.on('auth.logout', function () {
-                var lab = document.getElementById("pic_and_greet");
-                if (lab != null)
-                    document.body.removeChild(lab);
-            });
-        </script>
     
     <ul id="login-dp" class="dropdown-menu pull-right" style="padding: 14px 14px 0;">
         <li>
@@ -67,7 +40,7 @@
                         </h:form>
                     </f:view>
 
-                    
+
                 </div>
                 <div class="bottom text-center">
                     ¿Nuevo aquí? <a href="#"><b>Únete a nosotros</b></a>

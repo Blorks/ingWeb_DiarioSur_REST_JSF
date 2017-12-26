@@ -74,12 +74,36 @@ public class DiarioSurBean implements Serializable {
             if (params.size() > 0) {
                 usuario = new Usuario();
                 usuario.setRol("");
-                usuario.setEmail(params.get("email").toString());
-                System.out.println(usuario.getEmail());
-                logIn();
+                
+                if(logIn()){
+                    usuario.setEmail(params.get("email").toString());
+                }else {
+                    usuario.setNombre(params.get("first_name").toString());
+                    usuario.setApellidos(params.get("last_name").toString());
+                    usuario.setEmail(params.get("email").toString());
+                    usuario.setRol("Usuario");
+                    nuevoUsuario(usuario);
+                    logIn();
+                }
                 usuarioFoto = params.get("picture").toString();
             }
-        }catch (Exception e){}
+        } catch (Exception e) {
+            System.out.println("Error en RRSS: " + e.getMessage());
+        }
+    }
+
+    public void nuevoUsuario(Usuario us) {
+        clienteUsuario cliente = new clienteUsuario();
+        Response r = cliente.encontrarUsuarioPorEmail_XML(Response.class, usuario.getEmail());
+        if (r.getStatus() == 200) {
+            GenericType<List<Usuario>> genericType = new GenericType<List<Usuario>>() {
+            };
+            List<Usuario> usuarios = r.readEntity(genericType);
+
+            if (usuarios.isEmpty()) {
+                cliente.create_XML(us);
+            }
+        }
     }
 
     public String getUsuarioFoto() {
@@ -250,16 +274,16 @@ public class DiarioSurBean implements Serializable {
     public void editarEvento() {
         clienteEventos cliente = new clienteEventos();
         clienteDateev cliente2 = new clienteDateev();
-        
+
         String idFechaTemp = evento.getDateevId().getId().toString();
-        
+
         evento.setDateevId(null);
         cliente.edit_XML(evento, evento.getId().toString());
-        
+
         cliente2.remove(idFechaTemp);
-        
+
         adjuntarFecha();
-        
+
         cliente.edit_XML(evento, evento.getId().toString());
     }
 
@@ -307,16 +331,16 @@ public class DiarioSurBean implements Serializable {
 
             // reset variables
             evento = null;
-            
+
             evento = new Evento();
-            
+
             return "index";
         } else {
             editarEvento();
             edit = 0;
-            
+
             return "todoloseventos.xhtml";
-        } 
+        }
     }
 
     public String borrarEvento(Evento ev) {
@@ -406,9 +430,9 @@ public class DiarioSurBean implements Serializable {
         }
         return tagsEventoTemp;
     }
-    
-    public Tag encontrarUnTagsDeEvento(){
-        return encontrarTagsDeEvento().size() > 0? encontrarTagsDeEvento().get(0):null;
+
+    public Tag encontrarUnTagsDeEvento() {
+        return encontrarTagsDeEvento().size() > 0 ? encontrarTagsDeEvento().get(0) : null;
     }
 
     private Tag crearTag(String strTag) {
@@ -634,14 +658,14 @@ public class DiarioSurBean implements Serializable {
         fecha.setEsunico(1);
         fecha.setTodoslosdias(0);
         fecha.setVariosdias(0);
-        
+
         double precioTemp = 0.0;
-        
+
         evento.setTitulo("");
         evento.setSubtitulo("");
         evento.setPrecio(precioTemp);
         evento.setDescripcion("");
-        
+
         return "subirevento.xhtml";
     }
 
@@ -659,18 +683,24 @@ public class DiarioSurBean implements Serializable {
         return isLogin() ? "login.xhtml" : "logout.xhtml";
     }
 
-    public void logIn() {
+    public boolean logIn() {
         clienteUsuario cliente = new clienteUsuario();
         Response r = cliente.encontrarUsuarioPorEmail_XML(Response.class, usuario.getEmail());
-
         if (r.getStatus() == 200) {
             GenericType<List<Usuario>> genericType = new GenericType<List<Usuario>>() {
             };
             List<Usuario> usuarios = r.readEntity(genericType);
 
-            usuario = usuarios.get(0);
+            if (!usuarios.isEmpty()) {
+                usuario = usuarios.get(0);
+                return true;
+            } else {
+                return false;
+            }
         } else {
             usuario.setEmail("");
+            System.out.println("managedBean.DiarioSurBean.logIn() -> False");
+            return false;
         }
     }
 
@@ -706,7 +736,7 @@ public class DiarioSurBean implements Serializable {
 
             return eventos;
         }
-        */
+         */
         return null;
     }
 
@@ -828,6 +858,5 @@ public class DiarioSurBean implements Serializable {
         }
 
         return listaTemp;
-
     }
 }
