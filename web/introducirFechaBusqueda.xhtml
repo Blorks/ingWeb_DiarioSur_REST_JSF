@@ -1,16 +1,52 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Busqueda por fecha</title>
-    </h:head>
-    <h:body>
-        <h:form>
-        Introduzca la fecha a buscar: <h:inputText value="#{diarioSurBean.diaBusqueda}"/>
-        <h:commandButton value="Buscar" action="#{diarioSurBean.irEventosFiltradosFecha()}"/><br/>
-        <h:commandButton value="Volver" action="#{diarioSurBean.volver()}"/><br/>
-        </h:form>
-    </h:body>
-</html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="plantilla.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:t="http://xmlns.jcp.org/jsf/passthrough">
 
+    <ui:define name="contenido">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <section>
+                        <div class="wizard">
+                            <f:view>
+                                <h:form>
+                                    <div class="tab-content" style="margin: 25px;">
+                                        <h5><strong>Fecha a filtrar</strong></h5>
+                                        <hr/>
+                                        <div class="row mar_ned">
+                                            <div class="col-md-4 col-xs-3">
+                                                <p align="right"><stong>Fecha: </stong></p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="row">
+                                                    <input type="date" id="dia-unico" value=""/>
+                                                    <h:inputText id="fechaOcult" class="hidden" value="#{diarioSurBean.diaBusqueda}"/>
+                                                    <h:commandButton value="Buscar" action="#{diarioSurBean.irEventosFiltradosFecha()}"/><br/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </h:form>
+                            </f:view>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+
+    <ui:define name="script-individual">
+        <script>
+            $(document).ready(function () {
+                var diaUnico = new Date($('input[id$="dia-unico"]').val());
+                $('input[id$="fechaOcult"]').val(diaUnico.getDate() + "/" + (diaUnico.getMonth() + 1) + "/" + diaUnico.getFullYear());
+            });
+        </script>
+    </ui:define>
+</ui:composition>

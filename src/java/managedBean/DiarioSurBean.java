@@ -23,7 +23,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -31,7 +31,6 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.ServletException;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 
@@ -692,6 +691,7 @@ public class DiarioSurBean implements Serializable {
     }
 
     public List<Evento> mostrarEventosFiltradosPorFecha() {
+        /*
         clienteEventos cliente = new clienteEventos();
         Response r = cliente.encontrarEventosPorDia_XML(Response.class, diaBusqueda);
 
@@ -702,7 +702,7 @@ public class DiarioSurBean implements Serializable {
 
             return eventos;
         }
-
+        */
         return null;
     }
 
