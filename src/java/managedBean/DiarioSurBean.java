@@ -91,6 +91,7 @@ public class DiarioSurBean implements Serializable {
                     nuevoUsuario(usuario);
                     logIn();
                 }
+                
                 usuarioFoto = params.get("picture").toString();
             }
         } catch (Exception e) {
