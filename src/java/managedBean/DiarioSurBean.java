@@ -8,6 +8,7 @@ package managedBean;
 import clientes.clienteDateev;
 import clientes.clienteEventos;
 import clientes.clienteFileev;
+import clientes.clienteNotificacion;
 import clientes.clienteTag;
 import clientes.clienteTagUsuario;
 import clientes.clienteTagevento;
@@ -15,6 +16,7 @@ import clientes.clienteUsuario;
 import entity.Dateev;
 import entity.Evento;
 import entity.Fileev;
+import entity.Notificacion;
 import entity.Tag;
 import entity.Tagevento;
 import entity.Tagusuario;
@@ -934,6 +936,27 @@ public class DiarioSurBean implements Serializable {
             return usuarios.get(0).getFileevId().getUrl();
         }
         
+        return null;
+    }
+    
+    
+    //METODOS REFERENTES A LAS NOTIFICACIONES
+    public void crearNotificacion(String contenido, Usuario user){
+        clienteNotificacion cliente = new clienteNotificacion();
+        
+        Notificacion not = new Notificacion();
+        not.setDescripcion(contenido);
+        not.setLeida(0);
+        not.setUsuarioId(user);
+        
+        cliente.create_XML(not);
+    }
+    
+    public List<Notificacion> mostrarNotificacionesDeUsuario(Usuario user){
+        return null;
+    }
+    
+    public List<Notificacion> mostrarNotificacionesNoLeidas(Usuario user){
         return null;
     }
 }
