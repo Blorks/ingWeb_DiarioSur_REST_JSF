@@ -536,6 +536,36 @@ public class DiarioSurBean implements Serializable {
     }
 
     //METODOS REFERENTES A LAS FECHAS
+    public List<Dateev> mostrarTodasLasFechasUnicas(){
+        clienteDateev cliente = new clienteDateev();
+        Response r = cliente.encontrarFechaPorUnica_XML(Response.class);
+        
+        if (r.getStatus() == 200) {
+            GenericType<List<Dateev>> genericType = new GenericType<List<Dateev>>() {
+            };
+            List<Dateev> lista = r.readEntity(genericType);
+
+            return lista;
+        }
+        
+        return null;
+    }
+    
+    public List<Dateev> mostrarTodasLasFechasRango(){
+        clienteDateev cliente = new clienteDateev();
+        Response r = cliente.encontrarFechaPorRango_XML(Response.class);
+        
+        if (r.getStatus() == 200) {
+            GenericType<List<Dateev>> genericType = new GenericType<List<Dateev>>() {
+            };
+            List<Dateev> lista = r.readEntity(genericType);
+
+            return lista;
+        }
+        
+        return null;
+    }
+    
     public String mostrarFechaDeEvento(Evento ev) {
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -622,6 +652,7 @@ public class DiarioSurBean implements Serializable {
 
     //METODOS DE MOVIMIENTO ENTRE JSF
     public String volver() {
+        edit = 0;
         return "index.xhtml";
     }
 
@@ -654,18 +685,21 @@ public class DiarioSurBean implements Serializable {
 
     public String irCrearEvento() {
         // inicializo al primer caso que viene activado en la pagina
+        
         fecha = new Dateev();
         fecha.setEsunico(1);
         fecha.setTodoslosdias(0);
         fecha.setVariosdias(0);
 
-        double precioTemp = 0.0;
+        if(edit == 0){
+            double precioTemp = 0.0;
 
-        evento.setTitulo("");
-        evento.setSubtitulo("");
-        evento.setPrecio(precioTemp);
-        evento.setDescripcion("");
-
+            evento.setTitulo("");
+            evento.setSubtitulo("");
+            evento.setPrecio(precioTemp);
+            evento.setDescripcion("");
+        }
+        
         return "subirevento.xhtml";
     }
 
@@ -716,19 +750,15 @@ public class DiarioSurBean implements Serializable {
     }
 
     //FUNCIONES MOSTRAR EVENTOS POR FILTROS Y ORDEN ALVARO
-    public String irEventosFiltradosFecha() {
+    public String irEventosFiltradosFecha(Dateev fechaTemp) {
+        fecha = fechaTemp;
         return "eventosFiltradosFecha.xhtml";
     }
-
-    public String irIntroducirFechaBusqueda() {
-        return "introducirFechaBusqueda.xhtml";
-    }
-
-    public List<Evento> mostrarEventosFiltradosPorFecha() {
-        /*
+    
+    public List<Evento> mostrarEventosFiltradosPorFecha(){
         clienteEventos cliente = new clienteEventos();
-        Response r = cliente.encontrarEventosPorDia_XML(Response.class, diaBusqueda);
-
+        Response r = cliente.encontrarEventosPorFecha_XML(Response.class, fecha.getId().toString());
+        
         if (r.getStatus() == 200) {
             GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
             };
@@ -736,8 +766,12 @@ public class DiarioSurBean implements Serializable {
 
             return eventos;
         }
-         */
+        
         return null;
+    }
+
+    public String irIntroducirFechaBusqueda() {
+        return "introducirFechaBusqueda.xhtml";
     }
 
     public String irEventosFiltradosDireccion() {

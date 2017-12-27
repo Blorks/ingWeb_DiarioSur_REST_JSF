@@ -20,7 +20,7 @@ import javax.ws.rs.client.WebTarget;
  *        client.close();
  * </pre>
  *
- * @author alvar
+ * @author Dani
  */
 public class clienteEventos {
 
@@ -215,6 +215,18 @@ public class clienteEventos {
 
     public void create_JSON(Object requestEntity) throws ClientErrorException {
         webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON));
+    }
+
+    public <T> T encontrarEventosPorFecha_XML(Class<T> responseType, String idFecha) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("eventoFechaDesde/{0}", new Object[]{idFecha}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
+    }
+
+    public <T> T encontrarEventosPorFecha_JSON(Class<T> responseType, String idFecha) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("eventoFechaDesde/{0}", new Object[]{idFecha}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public <T> T encontrarEventoByPrecioMax_XML(Class<T> responseType, String precioMax) throws ClientErrorException {

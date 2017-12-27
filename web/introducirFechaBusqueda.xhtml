@@ -24,9 +24,48 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="row">
-                                                    <input type="date" id="dia-unico" value=""/>
-                                                    <h:inputText id="fechaOcult" class="hidden" value="#{diarioSurBean.diaBusqueda}"/>
-                                                    <h:commandButton value="Buscar" action="#{diarioSurBean.irEventosFiltradosFecha()}"/><br/>
+                                                    <h:form>
+                                                        <h5><h:outputText value="Listado de fechas únicas"/></h5>
+                                                        <h:dataTable value="#{diarioSurBean.mostrarTodasLasFechasUnicas()}" var="item">
+                                                            <h:column>
+                                                                <f:facet name="header">
+                                                                    <h:outputText value="Dia"/>
+                                                                </f:facet>
+                                                                <h:outputText value="#{item.dia}">
+                                                                    <f:convertDateTime pattern="MM/dd/yyyy" />
+                                                                </h:outputText>
+                                                            </h:column>
+                                                            <h:column>
+                                                                <h:commandButton value="Filtrar" action="#{diarioSurBean.irEventosFiltradosFecha(item)}"/><br/>
+                                                            </h:column>
+                                                        </h:dataTable>
+                                                    </h:form>
+
+
+                                                    <h:form>
+                                                        <h5><h:outputText value="Listado de rangos de fechas"/></h5>
+                                                        <h:dataTable value="#{diarioSurBean.mostrarTodasLasFechasRango()}" var="item">
+                                                            <h:column>
+                                                                <f:facet name="header">
+                                                                    <h:outputText value="Desde"/>
+                                                                </f:facet>
+                                                                <h:outputText value="#{item.desde}">
+                                                                    <f:convertDateTime pattern="MM/dd/yyyy" />
+                                                                </h:outputText>
+                                                            </h:column>
+                                                            <h:column>
+                                                                <f:facet name="header">
+                                                                    <h:outputText value="Hasta"/>
+                                                                </f:facet>
+                                                                <h:outputText value="#{item.hasta}">
+                                                                    <f:convertDateTime pattern="MM/dd/yyyy" />
+                                                                </h:outputText>
+                                                            </h:column>
+                                                            <h:column>
+                                                                <h:commandButton value="Filtrar" action="#{diarioSurBean.irEventosFiltradosFecha(item)}"/><br/>
+                                                            </h:column>
+                                                        </h:dataTable>
+                                                    </h:form>
                                                 </div>
                                             </div>
                                         </div>
@@ -38,15 +77,5 @@
                 </div>
             </div>
         </div>
-    </ui:define>
-
-
-    <ui:define name="script-individual">
-        <script>
-            $(document).ready(function () {
-                var diaUnico = new Date($('input[id$="dia-unico"]').val());
-                $('input[id$="fechaOcult"]').val(diaUnico.getDate() + "/" + (diaUnico.getMonth() + 1) + "/" + diaUnico.getFullYear());
-            });
-        </script>
     </ui:define>
 </ui:composition>
