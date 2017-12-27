@@ -9,6 +9,7 @@ import clientes.clienteDateev;
 import clientes.clienteEventos;
 import clientes.clienteFileev;
 import clientes.clienteNotificacion;
+import clientes.clientePuntuacion;
 import clientes.clienteTag;
 import clientes.clienteTagUsuario;
 import clientes.clienteTagevento;
@@ -17,6 +18,7 @@ import entity.Dateev;
 import entity.Evento;
 import entity.Fileev;
 import entity.Notificacion;
+import entity.Puntuacion;
 import entity.Tag;
 import entity.Tagevento;
 import entity.Tagusuario;
@@ -994,6 +996,53 @@ public class DiarioSurBean implements Serializable {
         notTemp.setLeida(1);
         
         cliente.edit_XML(notTemp, notTemp.getId().toString());
+    }
+    
+    //METODOS REFERENTES A LAS PUNTUACIONES
+    public void actualizarPuntuacion(double punto, Evento ev){
+        clientePuntuacion cliente = new clientePuntuacion();
+        Response r = cliente.encontrarPuntuacionesDeEventoYUsuario_XML(Response.class, ev.getId().toString(), usuario.getId().toString());
         
+        if (r.getStatus() == 200) {
+            GenericType<List<Puntuacion>> genericType = new GenericType<List<Puntuacion>>() {
+            };
+            List<Puntuacion> puntuacion = r.readEntity(genericType);
+            Puntuacion pt = new Puntuacion();
+
+            if(puntuacion.isEmpty()){
+                pt.setPuntuacion(punto);
+                pt.setEventoId(ev);
+                pt.setUsuarioId(usuario);
+                
+                cliente.create_XML(pt);
+            }else{
+                pt = puntuacion.get(0);
+                pt.setPuntuacion(punto);
+                
+                cliente.edit_XML(pt, pt.getId().toString());
+            }
+        }
+    }
+    
+    public double mostrarPuntuacionMedia(Evento ev){
+        clientePuntuacion cliente = new clientePuntuacion();
+        Response r = cliente.encontrarPuntuacionesDeEvento_XML(Response.class, ev.getId().toString());
+        
+        if (r.getStatus() == 200) {
+            GenericType<List<Puntuacion>> genericType = new GenericType<List<Puntuacion>>() {
+            };
+            List<Puntuacion> puntuaciones = r.readEntity(genericType);
+            double puntuacionTotal = 0;
+
+            for(int i=0; i<puntuaciones.size(); i++){
+                puntuacionTotal = puntuacionTotal + puntuaciones.get(i).getPuntuacion();
+            }
+            
+            puntuacionTotal = puntuacionTotal/puntuaciones.size();
+            
+            return puntuacionTotal;
+        }
+        
+        return 0;
     }
 }
