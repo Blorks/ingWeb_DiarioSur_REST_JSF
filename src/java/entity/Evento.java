@@ -44,6 +44,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Evento.findByEstarevisado", query = "SELECT e FROM Evento e WHERE e.estarevisado = :estarevisado")})
 public class Evento implements Serializable {
 
+    @OneToMany(mappedBy = "eventoId")
+    private List<Puntuacion> puntuacionList;
+
     private static final long serialVersionUID = 1L;
     @Size(max = 4000)
     @Column(name = "TITULO")
@@ -207,6 +210,15 @@ public class Evento implements Serializable {
     @Override
     public String toString() {
         return "entity.Evento[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public List<Puntuacion> getPuntuacionList() {
+        return puntuacionList;
+    }
+
+    public void setPuntuacionList(List<Puntuacion> puntuacionList) {
+        this.puntuacionList = puntuacionList;
     }
     
 }
