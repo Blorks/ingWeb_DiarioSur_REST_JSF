@@ -31,9 +31,7 @@
                                                                 <f:facet name="header">
                                                                     <h:outputText value="Dia"/>
                                                                 </f:facet>
-                                                                <h:outputText value="#{item.dia}">
-                                                                    <f:convertDateTime pattern="MM/dd/yyyy" />
-                                                                </h:outputText>
+                                                                <h:outputText value="#{diarioSurBean.mostrarFormatoDia(item.dia)}"/>
                                                             </h:column>
                                                             <h:column>
                                                                 <h:commandButton value="Filtrar" action="#{diarioSurBean.irEventosFiltradosFecha(item)}"/><br/>
@@ -49,17 +47,18 @@
                                                                 <f:facet name="header">
                                                                     <h:outputText value="Desde"/>
                                                                 </f:facet>
-                                                                <h:outputText value="#{item.desde}">
-                                                                    <f:convertDateTime pattern="MM/dd/yyyy" />
-                                                                </h:outputText>
+                                                                <h:outputText value="#{diarioSurBean.mostrarFormatoDia(item.desde)}"/>
+                                                            </h:column>
+                                                            <h:column>
+                                                                <f:facet name="header">
+                                                                    <h:outputText value="    -"/>
+                                                                </f:facet>
                                                             </h:column>
                                                             <h:column>
                                                                 <f:facet name="header">
                                                                     <h:outputText value="Hasta"/>
                                                                 </f:facet>
-                                                                <h:outputText value="#{item.hasta}">
-                                                                    <f:convertDateTime pattern="MM/dd/yyyy" />
-                                                                </h:outputText>
+                                                                <h:outputText value="#{diarioSurBean.mostrarFormatoDia(item.hasta)}"/>
                                                             </h:column>
                                                             <h:column>
                                                                 <h:commandButton value="Filtrar" action="#{diarioSurBean.irEventosFiltradosFecha(item)}"/><br/>

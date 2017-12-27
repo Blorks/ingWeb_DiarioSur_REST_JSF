@@ -553,6 +553,13 @@ public class DiarioSurBean implements Serializable {
         return null;
     }
     
+    public String mostrarFormatoDia(Date dia)
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String fechatmp = sdf.format(dia);
+        return fechatmp;
+    }
+    
     public List<Dateev> mostrarTodasLasFechasRango(){
         clienteDateev cliente = new clienteDateev();
         Response r = cliente.encontrarFechaPorRango_XML(Response.class);
