@@ -663,7 +663,6 @@ public class DiarioSurBean implements Serializable {
 
     //METODOS DE MOVIMIENTO ENTRE JSF
     public String volver() {
-        edit = 0;
         return "index.xhtml";
     }
 
@@ -960,10 +959,41 @@ public class DiarioSurBean implements Serializable {
     }
     
     public List<Notificacion> mostrarNotificacionesDeUsuario(Usuario user){
+        clienteNotificacion cliente = new clienteNotificacion();
+        Response r = cliente.encontrarTodasLasNotificacionesDeUsuario_XML(Response.class, user.getId().toString());
+        
+        if (r.getStatus() == 200) {
+            GenericType<List<Notificacion>> genericType = new GenericType<List<Notificacion>>() {
+            };
+            List<Notificacion> notificaciones = r.readEntity(genericType);
+
+            return notificaciones;
+        }
+        
         return null;
     }
     
     public List<Notificacion> mostrarNotificacionesNoLeidas(Usuario user){
+        clienteNotificacion cliente = new clienteNotificacion();
+        Response r = cliente.encontrarNotificacionesDeUsuario_XML(Response.class, user.getId().toString());
+        
+        if (r.getStatus() == 200) {
+            GenericType<List<Notificacion>> genericType = new GenericType<List<Notificacion>>() {
+            };
+            List<Notificacion> notificaciones = r.readEntity(genericType);
+
+            return notificaciones;
+        }
+        
         return null;
+    }
+    
+    public void marcarNotificacionComoLeida(Notificacion not){
+        clienteNotificacion cliente = new clienteNotificacion();
+        Notificacion notTemp = not;
+        notTemp.setLeida(1);
+        
+        cliente.edit_XML(notTemp, notTemp.getId().toString());
+        
     }
 }
