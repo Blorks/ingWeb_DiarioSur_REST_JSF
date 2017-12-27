@@ -8,7 +8,6 @@ package entity;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -32,9 +32,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Fileev.findAll", query = "SELECT f FROM Fileev f")
     , @NamedQuery(name = "Fileev.findById", query = "SELECT f FROM Fileev f WHERE f.id = :id")
-    , @NamedQuery(name = "Fileev.findByNombre", query = "SELECT f FROM Fileev f WHERE f.nombre = :nombre")
     , @NamedQuery(name = "Fileev.findByUrl", query = "SELECT f FROM Fileev f WHERE f.url = :url")
-    , @NamedQuery(name = "Fileev.findByTipo", query = "SELECT f FROM Fileev f WHERE f.tipo = :tipo")})
+    , @NamedQuery(name = "Fileev.findByUsuarioId", query = "SELECT f FROM Fileev f WHERE f.usuarioId = :usuarioId")})
 public class Fileev implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,22 +43,25 @@ public class Fileev implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Size(max = 4000)
-    @Column(name = "NOMBRE")
-    private String nombre;
-    @Size(max = 4000)
     @Column(name = "URL")
     private String url;
-    @Size(max = 4000)
-    @Column(name = "TIPO")
-    private String tipo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fileevId")
-    private List<Archivos> archivosList;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "USUARIO_ID")
+    private int usuarioId;
+    @OneToMany(mappedBy = "fileevId")
+    private List<Usuario> usuarioList;
 
     public Fileev() {
     }
 
     public Fileev(Integer id) {
         this.id = id;
+    }
+
+    public Fileev(Integer id, int usuarioId) {
+        this.id = id;
+        this.usuarioId = usuarioId;
     }
 
     public Integer getId() {
@@ -70,14 +72,6 @@ public class Fileev implements Serializable {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public String getUrl() {
         return url;
     }
@@ -86,21 +80,21 @@ public class Fileev implements Serializable {
         this.url = url;
     }
 
-    public String getTipo() {
-        return tipo;
+    public int getUsuarioId() {
+        return usuarioId;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setUsuarioId(int usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
     @XmlTransient
-    public List<Archivos> getArchivosList() {
-        return archivosList;
+    public List<Usuario> getUsuarioList() {
+        return usuarioList;
     }
 
-    public void setArchivosList(List<Archivos> archivosList) {
-        this.archivosList = archivosList;
+    public void setUsuarioList(List<Usuario> usuarioList) {
+        this.usuarioList = usuarioList;
     }
 
     @Override

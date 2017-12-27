@@ -12,11 +12,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -28,7 +27,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Calendario.findAll", query = "SELECT c FROM Calendario c")
-    , @NamedQuery(name = "Calendario.findById", query = "SELECT c FROM Calendario c WHERE c.id = :id")})
+    , @NamedQuery(name = "Calendario.findById", query = "SELECT c FROM Calendario c WHERE c.id = :id")
+    , @NamedQuery(name = "Calendario.findByEventoId", query = "SELECT c FROM Calendario c WHERE c.eventoId = :eventoId")
+    , @NamedQuery(name = "Calendario.findByUsuarioId", query = "SELECT c FROM Calendario c WHERE c.usuarioId = :usuarioId")})
 public class Calendario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,18 +38,26 @@ public class Calendario implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
-    @JoinColumn(name = "EVENTO_ID", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private Evento eventoId;
-    @JoinColumn(name = "USUARIO_ID", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private Usuario usuarioId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "EVENTO_ID")
+    private int eventoId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "USUARIO_ID")
+    private int usuarioId;
 
     public Calendario() {
     }
 
     public Calendario(Integer id) {
         this.id = id;
+    }
+
+    public Calendario(Integer id, int eventoId, int usuarioId) {
+        this.id = id;
+        this.eventoId = eventoId;
+        this.usuarioId = usuarioId;
     }
 
     public Integer getId() {
@@ -59,19 +68,19 @@ public class Calendario implements Serializable {
         this.id = id;
     }
 
-    public Evento getEventoId() {
+    public int getEventoId() {
         return eventoId;
     }
 
-    public void setEventoId(Evento eventoId) {
+    public void setEventoId(int eventoId) {
         this.eventoId = eventoId;
     }
 
-    public Usuario getUsuarioId() {
+    public int getUsuarioId() {
         return usuarioId;
     }
 
-    public void setUsuarioId(Usuario usuarioId) {
+    public void setUsuarioId(int usuarioId) {
         this.usuarioId = usuarioId;
     }
 

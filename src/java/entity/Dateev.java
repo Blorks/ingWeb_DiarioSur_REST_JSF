@@ -42,8 +42,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Dateev.findByHasta", query = "SELECT d FROM Dateev d WHERE d.hasta = :hasta")
     , @NamedQuery(name = "Dateev.findByVariosdias", query = "SELECT d FROM Dateev d WHERE d.variosdias = :variosdias")
     , @NamedQuery(name = "Dateev.findByListadias", query = "SELECT d FROM Dateev d WHERE d.listadias = :listadias")
-    , @NamedQuery(name = "Dateev.findByEventoId", query = "SELECT d FROM Dateev d WHERE d.eventoId = :eventoId")
-    , @NamedQuery(name = "Dateev.findByEventoId2", query = "SELECT d FROM Dateev d WHERE d.eventoId2 = :eventoId2")})
+    , @NamedQuery(name = "Dateev.findByEventoId", query = "SELECT d FROM Dateev d WHERE d.eventoId = :eventoId")})
 public class Dateev implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -74,8 +73,6 @@ public class Dateev implements Serializable {
     @NotNull
     @Column(name = "EVENTO_ID")
     private int eventoId;
-    @Column(name = "EVENTO_ID2")
-    private Integer eventoId2;
     @OneToMany(mappedBy = "dateevId")
     private List<Evento> eventoList;
 
@@ -161,14 +158,6 @@ public class Dateev implements Serializable {
 
     public void setEventoId(int eventoId) {
         this.eventoId = eventoId;
-    }
-
-    public Integer getEventoId2() {
-        return eventoId2;
-    }
-
-    public void setEventoId2(Integer eventoId2) {
-        this.eventoId2 = eventoId2;
     }
 
     @XmlTransient

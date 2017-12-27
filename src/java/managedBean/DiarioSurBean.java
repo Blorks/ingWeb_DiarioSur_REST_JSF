@@ -7,12 +7,14 @@ package managedBean;
 
 import clientes.clienteDateev;
 import clientes.clienteEventos;
+import clientes.clienteFileev;
 import clientes.clienteTag;
 import clientes.clienteTagUsuario;
 import clientes.clienteTagevento;
 import clientes.clienteUsuario;
 import entity.Dateev;
 import entity.Evento;
+import entity.Fileev;
 import entity.Tag;
 import entity.Tagevento;
 import entity.Tagusuario;
@@ -892,5 +894,47 @@ public class DiarioSurBean implements Serializable {
         }
 
         return listaTemp;
+    }
+    
+    
+    //METODOS REFERENTES A LOS FileEv
+    
+    public void adjuntarFotoDePerfil(String url){
+        clienteFileev cliente = new clienteFileev();
+        clienteUsuario cliente2 = new clienteUsuario();
+        
+        Fileev file = new Fileev();
+        file.setUrl(url);
+        file.setUsuarioId(usuario.getId());
+        
+        cliente.create_XML(file);
+        
+        
+        Response r = cliente.encontrarArchivoPorURL_XML(Response.class, url);
+        if (r.getStatus() == 200) {
+            GenericType<List<Fileev>> genericType = new GenericType<List<Fileev>>() {
+            };
+            List<Fileev> archivos = r.readEntity(genericType);
+
+            file = archivos.get(0);
+        }
+        
+        usuario.setFileevId(file);
+        cliente2.edit_XML(usuario, usuario.getId().toString());
+    }
+    
+    public String mostrarFotoDePerfil(Usuario user){
+        clienteUsuario cliente = new clienteUsuario();
+        Response r = cliente.find_XML(Response.class, user.getId().toString());
+        
+        if (r.getStatus() == 200) {
+            GenericType<List<Usuario>> genericType = new GenericType<List<Usuario>>() {
+            };
+            List<Usuario> usuarios = r.readEntity(genericType);
+
+            return usuarios.get(0).getFileevId().getUrl();
+        }
+        
+        return null;
     }
 }
