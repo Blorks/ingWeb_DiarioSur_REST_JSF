@@ -6,14 +6,14 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
-    <c:if test="#{!agendaManagedBean.isLogin()}">
+    <c:if test="#{!diaaaaaarioSurBean.isLogin()}">
         <f:view>
             <h:form>
-                <ui:repeat value="#{agendaManagedBean.encontrarNotificacionesDeUsuario()}" var="nota"  varStatus="estado">  
+                <ui:repeat value="#{diaaaaaarioSurBean.mostrarNotificacionesNoLeidas()}" var="nota"  varStatus="estado">  
                     <div class="row" style="width: 300px;position: fixed; bottom: 20px;right: 50px;z-index: 9999999;">
                         <div class="container">
                             <div class="col-md-3 alert alert-success alert-dismissable">
-                                <h:commandButton class="alert-dismissible close btn btn-link" value="&times;" action="#{agendaManagedBean.marcarNotificacionComoLeida(nota.id)}"/>
+                                <h:commandButton class="alert-dismissible close btn btn-link" value="&times;" action="#{agendaManagedBean.marcarNotificacionComoLeida(nota)}"/>
                                 <strong>Aviso!</strong> #{nota.descripcion}
                             </div>
                         </div>
