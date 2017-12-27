@@ -898,7 +898,6 @@ public class DiarioSurBean implements Serializable {
     
     
     //METODOS REFERENTES A LOS FileEv
-    
     public void adjuntarFotoDePerfil(String url){
         clienteFileev cliente = new clienteFileev();
         clienteUsuario cliente2 = new clienteUsuario();
