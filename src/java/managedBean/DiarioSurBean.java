@@ -999,13 +999,19 @@ public class DiarioSurBean implements Serializable {
             //Ordenar Map por Valor
 
             HashMap mapaOrdenado = new LinkedHashMap();
-            List<Evento> mapaKeys = new ArrayList(mapa.keySet());
+            List mapaKeys = new ArrayList(mapa.keySet());
             List mapaValues = new ArrayList(mapa.values());
-            TreeSet conjuntoOrdenado = new TreeSet(mapaValues);
-            Object[] arrayOrdenado = conjuntoOrdenado.toArray();
-            int size = arrayOrdenado.length;
+            List mapaValuesDesordenado = new ArrayList(mapaValues);
+            
+            java.util.Collections.sort(mapaValues);
+            
+            //TreeSet conjuntoOrdenado = new TreeSet(mapaValues);
+            //Object[] arrayOrdenado = conjuntoOrdenado.toArray();
+            //int size = arrayOrdenado.length;
+            int size = mapaValues.size();
             for (int i = 0; i < size; i++) {
-                mapaOrdenado.put(mapaKeys.get(mapaValues.indexOf(arrayOrdenado[i])), arrayOrdenado[i]);
+                mapaOrdenado.put(mapaKeys.get(mapaValuesDesordenado.indexOf(mapaValues.get(i))), mapaValues.get(i));
+                mapaValuesDesordenado.set(mapaValuesDesordenado.indexOf(mapaValues.get(i)), new Date());
             }
             List<Evento> eventosOrdenados = new ArrayList<>();
             /*Iterator it = mapaOrdenado.values().iterator();
@@ -1036,16 +1042,14 @@ public class DiarioSurBean implements Serializable {
             //return eventos;
             Map<Evento, Date> mapa = new HashMap<>();
             //List<Date> fechas = new ArrayList<>();
-            for(Evento e : eventos)
-            {
-                if(e.getDateevId().getEsunico() == 1)
+            for (Evento e : eventos) {
+                if (e.getDateevId().getEsunico() == 1) {
                     mapa.put(e, e.getDateevId().getDia());
-                    //fechas.add(e.getDateevId().getDia());
-                else if(e.getDateevId().getTodoslosdias() == 1)
+                } //fechas.add(e.getDateevId().getDia());
+                else if (e.getDateevId().getTodoslosdias() == 1) {
                     mapa.put(e, e.getDateevId().getDesde());
-                    //fechas.add(e.getDateevId().getDesde());
-                else
-                {
+                } //fechas.add(e.getDateevId().getDesde());
+                else {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                     String[] stringFechas = e.getDateevId().getListadias().trim().split(",");
                     String primerDia = stringFechas[0];
@@ -1061,25 +1065,31 @@ public class DiarioSurBean implements Serializable {
             //Ordenar Map por Valor
 
             HashMap mapaOrdenado = new LinkedHashMap();
-            List<Evento> mapaKeys = new ArrayList(mapa.keySet());
+            List mapaKeys = new ArrayList(mapa.keySet());
             List mapaValues = new ArrayList(mapa.values());
-            TreeSet conjuntoOrdenado = new TreeSet(mapaValues);
-            Object[] arrayOrdenado = conjuntoOrdenado.toArray();
-            int size = arrayOrdenado.length;
-            for (int i=size-1; i>-1; i--)
-            {
-                mapaOrdenado.put(mapaKeys.get(mapaValues.indexOf(arrayOrdenado[i])),arrayOrdenado[i]);
+            List mapaValuesDesordenado = new ArrayList(mapaValues);
+            
+            java.util.Collections.sort(mapaValues);
+            
+            //TreeSet conjuntoOrdenado = new TreeSet(mapaValues);
+            //Object[] arrayOrdenado = conjuntoOrdenado.toArray();
+            //int size = arrayOrdenado.length;
+            int size = mapaValues.size();
+            for (int i = size-1; i > -1; i--) {
+                mapaOrdenado.put(mapaKeys.get(mapaValuesDesordenado.indexOf(mapaValues.get(i))), mapaValues.get(i));
+                mapaValuesDesordenado.set(mapaValuesDesordenado.indexOf(mapaValues.get(i)), new Date());
             }
             List<Evento> eventosOrdenados = new ArrayList<>();
             /*Iterator it = mapaOrdenado.values().iterator();
             while (it.hasNext()) {
             System.out.println((String)it.next());*/
             Iterator it = mapaOrdenado.keySet().iterator();
-            while(it.hasNext())
+            while (it.hasNext()) {
                 eventosOrdenados.add((Evento) it.next());
-            return eventosOrdenados;
             }
-        
+            return eventosOrdenados;
+        }
+
         return null;
     }
     
