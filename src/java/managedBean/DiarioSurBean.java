@@ -614,7 +614,7 @@ public class DiarioSurBean implements Serializable {
         boolean encontrado = false;
         Date fechaTemp;
         Date fechaTemp2 = fecha.getDia();
-        int test;
+        int test; //comentario
 
         clienteDateev cliente = new clienteDateev();
         Response r = cliente.findAll_XML(Response.class);
