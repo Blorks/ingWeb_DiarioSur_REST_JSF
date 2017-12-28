@@ -257,7 +257,9 @@
 
 
     <ui:define name="script-individual">
+
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyAb7jwWqPc7TD6J69V6dZS_9lucF5CxkF8"></script>
+
         <script>
             $(document).ready(function () {
                 var esUnico = true;
@@ -486,10 +488,10 @@
                 });
 
                 /*
-                 * Mapas
+                 * Mapas (36.71589398816918, -4.477620013640262) teleco
                  */
-                var latitud = 41.652393;
-                var longitud = 1.691895;
+                var latitud = 36.71589398816918;
+                var longitud = -4.477620013640262;
                 var mapDiv = document.getElementById('map');
                 var latlng = new google.maps.LatLng(latitud, longitud);
                 var options = {
@@ -500,6 +502,7 @@
                             // mas opciones en https://developers.google.com/maps/documentation/javascript/reference?hl=es#MapOptions
                 };
                 var map = new google.maps.Map(mapDiv, options);
+                google.maps.event.addDomListener(window, 'load');
                 var geocoder = new google.maps.Geocoder();
 
                 var marca_map = marca(latitud, longitud, 'titulo al poner el raton encima de la marca', 'contenido al clicar en la marca');
