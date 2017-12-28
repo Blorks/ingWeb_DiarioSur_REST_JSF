@@ -119,7 +119,6 @@ public class DiarioSurBean implements Serializable {
                 }
             }
         }
-
     }
 
     //GETTER Y SETTERS
@@ -322,6 +321,9 @@ public class DiarioSurBean implements Serializable {
 
             fecha.setEventoId(actualizarIDEvento());
             clienteFecha.edit_XML(fecha, fecha.getId().toString());
+            
+            //Creo notificacion para usuario
+            crearNotificacion("Evento Creado", usuario);
 
             // reset variables
             evento = null;
@@ -1212,6 +1214,7 @@ public class DiarioSurBean implements Serializable {
         cliente.create_XML(not);
     }
 
+    /*
     public List<Notificacion> mostrarNotificacionesDeUsuario(Usuario user) {
         clienteNotificacion cliente = new clienteNotificacion();
         Response r = cliente.encontrarTodasLasNotificacionesDeUsuario_XML(Response.class, user.getId().toString());
@@ -1226,10 +1229,11 @@ public class DiarioSurBean implements Serializable {
 
         return null;
     }
+    */
 
-    public List<Notificacion> mostrarNotificacionesNoLeidas(Usuario user) {
+    public List<Notificacion> mostrarNotificacionesNoLeidas() {
         clienteNotificacion cliente = new clienteNotificacion();
-        Response r = cliente.encontrarNotificacionesDeUsuario_XML(Response.class, user.getId().toString());
+        Response r = cliente.findAll_XML(Response.class);
 
         if (r.getStatus() == 200) {
             GenericType<List<Notificacion>> genericType = new GenericType<List<Notificacion>>() {
