@@ -262,12 +262,97 @@
 
         <script>
             $(document).ready(function () {
+                /*
+                 * Mapas (36.71589398816918, -4.477620013640262) teleco
+                 */
+                var latitud = 36.71589398816918;
+                var longitud = -4.477620013640262;
+                var mapDiv = document.getElementById('map');
+                var latlng = new google.maps.LatLng(latitud, longitud);
+                var options = {
+                    center: latlng,
+                    zoom: 8,
+                    mapTypeControl: true,
+                    mapTypeControlOptions: {
+                        style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                        position: google.maps.ControlPosition.TOP_CENTER
+                    },
+                    zoomControl: true,
+                    zoomControlOptions: {
+                        position: google.maps.ControlPosition.LEFT_CENTER
+                    },
+                    scaleControl: true,
+                    streetViewControl: true,
+                    streetViewControlOptions: {
+                        position: google.maps.ControlPosition.LEFT_TOP
+                    },
+                    fullscreenControl: true,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                            // mas opciones en https://developers.google.com/maps/documentation/javascript/reference?hl=es#MapOptions
+                };
+                var map;
+                function inicializarMapa() {
+                    map = new google.maps.Map(mapDiv, options);
+                    var geocoder = new google.maps.Geocoder();
+
+                    var marca_map = marca(latitud, longitud, 'titulo al poner el raton encima de la marca', 'contenido al clicar en la marca');
+
+                    // recoge la lat y long al clicar el mapa
+                    // importante que esté debajo de el evento marca(...) no antes
+                    google.maps.event.addListener(map, 'click', function (e) {
+                        marca_map.setMap(null);
+                        marca_map = marca(e.latLng.lat(), e.latLng.lng(), 'Nueva dirección', 'Nueva dirección');
+                        $('input[id$="latitudOculta"]').val(e.latLng.lat());
+                        $('input[id$="longitudOculta"]').val(e.latLng.lng());
+
+                        // devuelve direccion
+                        geocoder.geocode({
+                            latLng: e.latLng
+                        }, function (r, status) {
+                            if (status === google.maps.GeocoderStatus.OK) {
+                                if (r[0]) {
+                                    $('input[id$="direccionOculta"]').val(r[0].formatted_address);
+                                    $('#info-mapa').text(r[0].formatted_address + " (" + e.latLng.lat() + ", " + e.latLng.lng() + ")");
+                                }
+                            }
+                        });
+                    });
+                }
+                function marca(lat, long, tit, cont) {
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(lat, long),
+                        map: map,
+                        title: tit
+                    });
+
+                    // evento de clicar encima de la marca
+                    google.maps.event.addListener(marker, 'click', function (e) {
+                        console.log(e);
+                        var infowindow = new google.maps.InfoWindow({
+                            content: cont
+                        });
+                        infowindow.open(map, marker);
+                    });
+                    return marker;
+                }
+
+                function showPosition(position) {
+                    map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+                    marca(position.coords.latitude, position.coords.longitude, 'posicion actual', 'contenido actualizado');
+                }
+                
+                
+                
+                /*
+                 * Fechas
+                 */
                 var esUnico = true;
                 var todosLosDias = false;       // desde-hasta
                 var variosDias = false;         //list
                 //var listaDias[];
 
                 $("#nextDates").click(function () {
+                    inicializarMapa();
                     var listDates = "";
                     var i = 1;
                     $(".dates").each(function () {
@@ -487,69 +572,7 @@
                     }
                 });
 
-                /*
-                 * Mapas (36.71589398816918, -4.477620013640262) teleco
-                 */
-                var latitud = 36.71589398816918;
-                var longitud = -4.477620013640262;
-                var mapDiv = document.getElementById('map');
-                var latlng = new google.maps.LatLng(latitud, longitud);
-                var options = {
-                    center: latlng,
-                    zoom: 8,
-                    mapTypeControl: true,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                            // mas opciones en https://developers.google.com/maps/documentation/javascript/reference?hl=es#MapOptions
-                };
-                var map = new google.maps.Map(mapDiv, options);
-                google.maps.event.addDomListener(window, 'load');
-                var geocoder = new google.maps.Geocoder();
-
-                var marca_map = marca(latitud, longitud, 'titulo al poner el raton encima de la marca', 'contenido al clicar en la marca');
-
-                // recoge la lat y long al clicar el mapa
-                // importante que esté debajo de el evento marca(...) no antes
-                google.maps.event.addListener(map, 'click', function (e) {
-                    marca_map.setMap(null);
-                    marca_map = marca(e.latLng.lat(), e.latLng.lng(), 'Nueva dirección', 'Nueva dirección');
-                    $('input[id$="latitudOculta"]').val(e.latLng.lat());
-                    $('input[id$="longitudOculta"]').val(e.latLng.lng());
-
-                    // devuelve direccion
-                    geocoder.geocode({
-                        'latLng': e.latLng
-                    }, function (r, status) {
-                        if (status === google.maps.GeocoderStatus.OK) {
-                            if (r[0]) {
-                                $('input[id$="direccionOculta"]').val(r[0].formatted_address);
-                                $('#info-mapa').text(r[0].formatted_address + " (" + e.latLng.lat() + ", " + e.latLng.lng() + ")");
-                            }
-                        }
-                    });
-                });
-
-                function marca(lat, long, tit, cont) {
-                    var marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(lat, long),
-                        map: map,
-                        title: tit
-                    });
-
-                    // evento de clicar encima de la marca
-                    google.maps.event.addListener(marker, 'click', function (e) {
-                        console.log(e);
-                        var infowindow = new google.maps.InfoWindow({
-                            content: cont
-                        });
-                        infowindow.open(map, marker);
-                    });
-                    return marker;
-                }
-
-                function showPosition(position) {
-                    map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-                    marca(position.coords.latitude, position.coords.longitude, 'posicion actual', 'contenido actualizado');
-                }
+                
             });
 
 
