@@ -312,7 +312,7 @@
                             if (status === google.maps.GeocoderStatus.OK) {
                                 if (r[0]) {
                                     $('input[id$="direccionOculta"]').val(r[0].formatted_address);
-                                    $('#info-mapa').text(r[0].formatted_address + " (" + e.latLng.lat() + ", " + e.latLng.lng() + ")");
+                                    $('#info-mapa').text(r[0].formatted_address /*+ " (" + e.latLng.lat() + ", " + e.latLng.lng() + ")"*/); // quito que se vea las coordenadas que no es un dato importante para mostrar
                                 }
                             }
                         });
