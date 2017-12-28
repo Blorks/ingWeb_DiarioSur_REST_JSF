@@ -37,10 +37,7 @@
                                                                 <h:commandButton value="Filtrar" action="#{diarioSurBean.irEventosFiltradosFecha(item)}"/><br/>
                                                             </h:column>
                                                         </h:dataTable>
-                                                    </h:form>
-
-
-                                                    <h:form>
+                                                    
                                                         <h5><h:outputText value="Listado de rangos de fechas"/></h5>
                                                         <h:dataTable value="#{diarioSurBean.mostrarTodasLasFechasRango()}" var="item">
                                                             <h:column>
@@ -53,6 +50,7 @@
                                                                 <f:facet name="header">
                                                                     <h:outputText value="    -"/>
                                                                 </f:facet>
+                                                                <h:outputText value="-"/>
                                                             </h:column>
                                                             <h:column>
                                                                 <f:facet name="header">

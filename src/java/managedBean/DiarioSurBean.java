@@ -30,8 +30,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -774,7 +778,7 @@ public class DiarioSurBean implements Serializable {
     //FUNCIONES MOSTRAR EVENTOS POR FILTROS Y ORDEN ALVARO
     public String irEventosFiltradosFecha(Dateev fechaTemp) {
         fecha = fechaTemp;
-        return "eventosFiltradosFecha.xhtml";
+        return "eventosFiltradosFecha";
     }
 
     public List<Evento> mostrarEventosFiltradosPorFecha() {
@@ -797,7 +801,7 @@ public class DiarioSurBean implements Serializable {
     }
 
     public String irEventosFiltradosDireccion() {
-        return "eventosFiltradosDireccion.xhtml";
+        return "eventosFiltradosDireccion";
     }
 
     public String irIntroducirDistanciaMaxima() {
@@ -805,7 +809,7 @@ public class DiarioSurBean implements Serializable {
     }
 
     public String irEventosFiltradosPrecio() {
-        return "eventosFiltradosPrecio.xhtml";
+        return "eventosFiltradosPrecio";
     }
 
     public String irIntroducirPrecioMaximo() {
@@ -850,15 +854,59 @@ public class DiarioSurBean implements Serializable {
 
     public List<Evento> mostrarEventosOrdenadosPorFecha() { //FALTA TERMINAR
         clienteEventos cliente = new clienteEventos();
-        Response r = cliente.ordenarEventosPrecio_XML(Response.class);
+        Response r = cliente.findAll_XML(Response.class);
         if (r.getStatus() == 200) {
             GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
             };
             List<Evento> eventos = r.readEntity(genericType);
 
-            return eventos;
-        }
+            //return eventos;
+            Map<Evento, Date> mapa = new HashMap<>();
+            //List<Date> fechas = new ArrayList<>();
+            for(Evento e : eventos)
+            {
+                if(e.getDateevId().getEsunico() == 1)
+                    mapa.put(e, e.getDateevId().getDia());
+                    //fechas.add(e.getDateevId().getDia());
+                else if(e.getDateevId().getTodoslosdias() == 1)
+                    mapa.put(e, e.getDateevId().getDesde());
+                    //fechas.add(e.getDateevId().getDesde());
+                else
+                {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                    String[] stringFechas = e.getDateevId().getListadias().trim().split(",");
+                    String primerDia = stringFechas[0];
+                    try {
+                        Date d = sdf.parse(primerDia);
+                        mapa.put(e, d);
+                        //fechas.add(d);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(DiarioSurBean.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+            //Ordenar Map por Valor
 
+            HashMap mapaOrdenado = new LinkedHashMap();
+            List<Evento> mapaKeys = new ArrayList(mapa.keySet());
+            List mapaValues = new ArrayList(mapa.values());
+            TreeSet conjuntoOrdenado = new TreeSet(mapaValues);
+            Object[] arrayOrdenado = conjuntoOrdenado.toArray();
+            int size = arrayOrdenado.length;
+            for (int i=0; i<size; i++)
+            {
+                mapaOrdenado.put(mapaKeys.get(mapaValues.indexOf(arrayOrdenado[i])),arrayOrdenado[i]);
+            }
+            List<Evento> eventosOrdenados = new ArrayList<>();
+            /*Iterator it = mapaOrdenado.values().iterator();
+            while (it.hasNext()) {
+            System.out.println((String)it.next());*/
+            Iterator it = mapaOrdenado.keySet().iterator();
+            while(it.hasNext())
+                eventosOrdenados.add((Evento) it.next());
+            return eventosOrdenados;
+            }
+        
         return null;
     }
 
