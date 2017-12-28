@@ -916,6 +916,10 @@ public class DiarioSurBean implements Serializable {
 
         return null;
     }
+    
+    public String irElegirSentidoAlfabetico() {
+        return "elegirSentidoAlfabetico.xhtml";
+    }
 
     public String irEventosOrdenadosAlfabeticamente() {
         return "eventosOrdenadosAlfabeticamente.xhtml";
@@ -934,12 +938,34 @@ public class DiarioSurBean implements Serializable {
 
         return null;
     }
+    
+    public String irEventosOrdenadosAlfabeticamenteDESC() {
+        return "eventosOrdenadosAlfabeticamenteDESC.xhtml";
+    }
+    
+    public List<Evento> mostrarEventosOrdenadosAlfabeticamenteDESC() {
+        clienteEventos cliente = new clienteEventos();
+        Response r = cliente.ordenarEventosAlfabeticamenteDESC_XML(Response.class);
+        if (r.getStatus() == 200) {
+            GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
+            };
+            List<Evento> eventos = r.readEntity(genericType);
+
+            return eventos;
+        }
+
+        return null;
+    }
+    
+    public String irElegirSentidoFecha() {
+        return "elegirSentidoFecha.xhtml";
+    }
 
     public String irEventosOrdenadosFecha() {
         return "eventosOrdenadosFecha.xhtml";
     }
 
-    public List<Evento> mostrarEventosOrdenadosPorFecha() { //FALTA TERMINAR
+    public List<Evento> mostrarEventosOrdenadosPorFecha() {
         clienteEventos cliente = new clienteEventos();
         Response r = cliente.findAll_XML(Response.class);
         if (r.getStatus() == 200) {
@@ -994,6 +1020,72 @@ public class DiarioSurBean implements Serializable {
 
         return null;
     }
+    
+    public String irEventosOrdenadosFechaDESC() {
+        return "eventosOrdenadosFechaDESC.xhtml";
+    }
+    
+    public List<Evento> mostrarEventosOrdenadosPorFechaDESC() {
+        clienteEventos cliente = new clienteEventos();
+        Response r = cliente.findAll_XML(Response.class);
+        if (r.getStatus() == 200) {
+            GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
+            };
+            List<Evento> eventos = r.readEntity(genericType);
+
+            //return eventos;
+            Map<Evento, Date> mapa = new HashMap<>();
+            //List<Date> fechas = new ArrayList<>();
+            for(Evento e : eventos)
+            {
+                if(e.getDateevId().getEsunico() == 1)
+                    mapa.put(e, e.getDateevId().getDia());
+                    //fechas.add(e.getDateevId().getDia());
+                else if(e.getDateevId().getTodoslosdias() == 1)
+                    mapa.put(e, e.getDateevId().getDesde());
+                    //fechas.add(e.getDateevId().getDesde());
+                else
+                {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                    String[] stringFechas = e.getDateevId().getListadias().trim().split(",");
+                    String primerDia = stringFechas[0];
+                    try {
+                        Date d = sdf.parse(primerDia);
+                        mapa.put(e, d);
+                        //fechas.add(d);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(DiarioSurBean.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+            //Ordenar Map por Valor
+
+            HashMap mapaOrdenado = new LinkedHashMap();
+            List<Evento> mapaKeys = new ArrayList(mapa.keySet());
+            List mapaValues = new ArrayList(mapa.values());
+            TreeSet conjuntoOrdenado = new TreeSet(mapaValues);
+            Object[] arrayOrdenado = conjuntoOrdenado.toArray();
+            int size = arrayOrdenado.length;
+            for (int i=size-1; i>-1; i--)
+            {
+                mapaOrdenado.put(mapaKeys.get(mapaValues.indexOf(arrayOrdenado[i])),arrayOrdenado[i]);
+            }
+            List<Evento> eventosOrdenados = new ArrayList<>();
+            /*Iterator it = mapaOrdenado.values().iterator();
+            while (it.hasNext()) {
+            System.out.println((String)it.next());*/
+            Iterator it = mapaOrdenado.keySet().iterator();
+            while(it.hasNext())
+                eventosOrdenados.add((Evento) it.next());
+            return eventosOrdenados;
+            }
+        
+        return null;
+    }
+    
+    public String irElegirSentidoPrecio() {
+        return "elegirSentidoPrecio.xhtml";
+    }
 
     public String irEventosOrdenadosPrecio() {
         return "eventosOrdenadosPrecio.xhtml";
@@ -1002,6 +1094,24 @@ public class DiarioSurBean implements Serializable {
     public List<Evento> mostrarEventosOrdenadosPorPrecio() {
         clienteEventos cliente = new clienteEventos();
         Response r = cliente.ordenarEventosPrecio_XML(Response.class);
+        if (r.getStatus() == 200) {
+            GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
+            };
+            List<Evento> eventos = r.readEntity(genericType);
+
+            return eventos;
+        }
+
+        return null;
+    }
+    
+    public String irEventosOrdenadosPrecioDESC() {
+        return "eventosOrdenadosPrecioDESC.xhtml";
+    }
+
+    public List<Evento> mostrarEventosOrdenadosPorPrecioDESC() {
+        clienteEventos cliente = new clienteEventos();
+        Response r = cliente.ordenarEventosPrecioDESC_XML(Response.class);
         if (r.getStatus() == 200) {
             GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
             };
