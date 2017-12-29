@@ -210,6 +210,19 @@
                                                 <h5><strong>Verificación de los datos</strong></h5>
                                                 <hr/>
                                                 <div class="row mar_ned">
+                                                    <div class="col-md-4">
+                                                        <p align="right"><stong>Lista de tags:</stong></p>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <h:inputTextarea class="form-control" id="listtag" value="#{diarioSurBean.tagsEvento}" required="true"/>
+                                                        <br />
+                                                        <div class="well well-lg">
+                                                            Ejemplo:<br />
+                                                            coche, accidente, carretera, etc..                                         
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mar_ned">
                                                     <div class="col-md-4 col-xs-3">
                                                         <!-- -->
                                                     </div>
@@ -224,15 +237,15 @@
                                                                 <p id="mostrar_diaunico"></p>
                                                                 <p><span id="mostrar_ev_fecha_desde"></span> - <span id="mostrar_ev_fecha_hasta"></span></p>
                                                                 <p id="mostrar_ev_lista_fechas"></p>
+
                                                                 <div class="container-fluid">
                                                                     <div class="row">
                                                                         <div class="col-md-12">
                                                                             <div class="btn-group">
-                                                                                
+
                                                                             </div>
                                                                             <ul class="list-inline pull-right">
                                                                                 <li><button type="button" class="btn btn-default prev-step">Atrás</button></li>
-                                                                                <li><h:commandButton class="btn btn-primary" value="Añadir tags" action="#{diarioSurBean.irAnadirTagsEvento()}" /></li>
                                                                                 <li><h:commandButton class="btn btn-warning" value="Crear evento" action="#{diarioSurBean.nuevoEvento()}" /></li>
                                                                             </ul>
                                                                         </div>
@@ -243,7 +256,6 @@
                                                         </div>
                                                     </div>
                                                     <div class="row mar_ned">
-
                                                     </div>
                                                 </div>
                                             </div>

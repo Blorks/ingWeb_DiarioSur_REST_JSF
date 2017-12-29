@@ -83,6 +83,18 @@ public class clienteNotificacion {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
+    public <T> T encontrarNotificacionByUsuario_XML(Class<T> responseType, String idUser) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("notificacionUsuario/{0}", new Object[]{idUser}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
+    }
+
+    public <T> T encontrarNotificacionByUsuario_JSON(Class<T> responseType, String idUser) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("notificacionUsuario/{0}", new Object[]{idUser}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
     public void create_XML(Object requestEntity) throws ClientErrorException {
         webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
     }
@@ -91,15 +103,15 @@ public class clienteNotificacion {
         webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON));
     }
 
-    public <T> T encontrarTodasLasNotificacionesDeUsuario_XML(Class<T> responseType, String user) throws ClientErrorException {
+    public <T> T encontrarTodasLasNotificacionesDeUsuario_XML(Class<T> responseType, String idUser) throws ClientErrorException {
         WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("notificacionTodas/{0}", new Object[]{user}));
+        resource = resource.path(java.text.MessageFormat.format("notificacionTodas/{0}", new Object[]{idUser}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public <T> T encontrarTodasLasNotificacionesDeUsuario_JSON(Class<T> responseType, String user) throws ClientErrorException {
+    public <T> T encontrarTodasLasNotificacionesDeUsuario_JSON(Class<T> responseType, String idUser) throws ClientErrorException {
         WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("notificacionTodas/{0}", new Object[]{user}));
+        resource = resource.path(java.text.MessageFormat.format("notificacionTodas/{0}", new Object[]{idUser}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
@@ -115,18 +127,6 @@ public class clienteNotificacion {
 
     public void remove(String id) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete();
-    }
-
-    public <T> T encontrarNotificacionesDeUsuario_XML(Class<T> responseType, String user) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("notificacionLeida/{0}", new Object[]{user}));
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
-    }
-
-    public <T> T encontrarNotificacionesDeUsuario_JSON(Class<T> responseType, String user) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("notificacionLeida/{0}", new Object[]{user}));
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public void close() {
