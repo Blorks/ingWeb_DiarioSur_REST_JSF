@@ -62,6 +62,8 @@ public class DiarioSurBean implements Serializable {
     private int edit = 0;
 
     private Dateev fecha = new Dateev();
+    private Dateev fechaTemp = new Dateev();
+    
     private String listaDias = "";
     private String[] arFecha;
 
@@ -77,9 +79,18 @@ public class DiarioSurBean implements Serializable {
     private String puntuacion_evId = "";
     private String puntuacion = "";
 
+    public Dateev getFechaTemp() {
+        return fechaTemp;
+    }
+
+    public void setFechaTemp(Dateev fechaTemp) {
+        this.fechaTemp = fechaTemp;
+    }
+
     public String getPuntuacion_evId() {
         return puntuacion_evId;
     }
+    
 
     public void setPuntuacion_evId(String puntuacion_evId) {
         this.puntuacion_evId = puntuacion_evId;
@@ -1040,18 +1051,18 @@ public class DiarioSurBean implements Serializable {
     }
 
     //FUNCIONES MOSTRAR EVENTOS POR FILTROS Y ORDEN ALVARO
-    public String irEventosFiltradosFecha(Dateev fechaTemp) {
-        fecha = fechaTemp;
+    public String irEventosFiltradosFecha(Dateev fecha2) {
+        fechaTemp = fecha2;
         return "eventosFiltradosFecha";
     }
 
     public List<Evento> mostrarEventosFiltradosPorFecha() {
         clienteEventos cliente = new clienteEventos();
-        Response r = cliente.encontrarEventosPorFecha_XML(Response.class, fecha.getId().toString());
+        
+        Response r = cliente.encontrarEventosPorFecha_XML(Response.class, fechaTemp.getId().toString());
 
         if (r.getStatus() == 200) {
-            GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
-            };
+            GenericType<List<Evento>> genericType = new GenericType<List<Evento>>(){};
             List<Evento> eventos = r.readEntity(genericType);
 
             return eventos;
