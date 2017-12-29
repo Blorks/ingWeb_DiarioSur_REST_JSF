@@ -308,7 +308,10 @@ public class DiarioSurBean implements Serializable {
     public void editarEvento() {
         clienteEventos cliente = new clienteEventos();
         clienteDateev cliente2 = new clienteDateev();
-
+        clienteTag cliente3 = new clienteTag();
+        List<Tag> listaTags = encontrarTagsDeEvento();
+        
+        //Edicion de la Fecha
         String idFechaTemp = evento.getDateevId().getId().toString();
 
         evento.setDateevId(null);
@@ -316,8 +319,31 @@ public class DiarioSurBean implements Serializable {
 
         cliente2.remove(idFechaTemp);
 
-        //adjuntarFecha();
+        adjuntarFecha();
+        
+        //Edicion del Evento
         cliente.edit_XML(evento, evento.getId().toString());
+        
+        //Edicion de Tags
+        Response r;
+        List<Tag> listaTemp;
+        GenericType<List<Tag>> genericType;
+        for(int i=0; i<listaTags.size(); i++){
+            r = cliente3.encontrarTagPorNombre_XML(Response.class, listaTags.get(i).getNombre());
+            if(r.getStatus() == 200){
+                genericType = new GenericType<List<Tag>>(){};
+                listaTemp = r.readEntity(genericType);
+                
+                if(!listaTemp.isEmpty()){
+                    eliminarTagEvento(listaTemp.get(0));
+                }
+            }
+        }
+        
+        adjuntarTagsEvento();
+        
+        //Creo notificacion
+        crearNotificacion("Has editado el evento con exito!", usuario);
     }
 
     private int actualizarIDEvento() {
@@ -363,7 +389,12 @@ public class DiarioSurBean implements Serializable {
             clienteFecha.edit_XML(fecha, fecha.getId().toString());
 
             //Creo notificacion para usuario
-            crearNotificacion("Evento Creado", usuario);
+            if(esPeriodista()){
+                crearNotificacion("Has creado el evento con exito!", usuario);
+            }else{
+                crearNotificacion("Tu evento está a la espera de ser validado", usuario);
+            }
+            
 
             // reset variables
             evento = null;
@@ -382,26 +413,48 @@ public class DiarioSurBean implements Serializable {
     public String borrarEvento(Evento ev) {
         clienteEventos cliente = new clienteEventos();
         clienteDateev clienteFecha = new clienteDateev();
+        clienteTag cliente3 = new clienteTag();
+        List<Tag> listaTags = encontrarTagsDeEvento();
+        
+        //Elimino tags de evento
+        Response r;
+        List<Tag> listaTemp;
+        GenericType<List<Tag>> genericType;
+        for(int i=0; i<listaTags.size(); i++){
+            r = cliente3.encontrarTagPorNombre_XML(Response.class, listaTags.get(i).getNombre());
+            if(r.getStatus() == 200){
+                genericType = new GenericType<List<Tag>>(){};
+                listaTemp = r.readEntity(genericType);
+                
+                if(!listaTemp.isEmpty()){
+                    eliminarTagEvento(listaTemp.get(0));
+                }
+            }
+        }
 
-        Response r = clienteFecha.encontrarFechaPorID_XML(Response.class, ev.getDateevId().getId().toString());
+        //Elimino Evento
+        r = clienteFecha.encontrarFechaPorID_XML(Response.class, ev.getDateevId().getId().toString());
         if (r.getStatus() == 200) {
-            GenericType<List<Dateev>> genericType = new GenericType<List<Dateev>>() {
+            GenericType<List<Dateev>> genericType2 = new GenericType<List<Dateev>>() {
             };
-            List<Dateev> listaFecha = r.readEntity(genericType);
+            List<Dateev> listaFecha = r.readEntity(genericType2);
 
             cliente.remove(ev.getId().toString());
 
+            //Elimino Fecha de Evento
             r = cliente.encontrarEventosPorFecha_XML(Response.class, listaFecha.get(0).getId().toString());
             if (r.getStatus() == 200) {
-                GenericType<List<Evento>> genericType2 = new GenericType<List<Evento>>() {
+                GenericType<List<Evento>> genericType3 = new GenericType<List<Evento>>() {
                 };
-                List<Evento> listaEvento = r.readEntity(genericType2);
+                List<Evento> listaEvento = r.readEntity(genericType3);
 
                 if (listaEvento.isEmpty()) {
                     clienteFecha.remove(ev.getDateevId().getId().toString());
                 }
             }
         }
+        
+        crearNotificacion("Has eliminado el evento con exito!", usuario);
 
         return "todoloseventos.xhtml";
     }
@@ -428,6 +481,8 @@ public class DiarioSurBean implements Serializable {
         eventoTemporal.setEstarevisado(1);
 
         cliente.edit_XML(eventoTemporal, ev.getId().toString());
+        
+        crearNotificacion("El evento se ha validad con exito!", usuario);
 
         return "validarEvento.xhtml";
     }
@@ -442,6 +497,17 @@ public class DiarioSurBean implements Serializable {
         }
         
         tagsUsuario = lista;
+    }
+    
+    public void mostrarTagsDeEvento() {
+        List<Tag> listaTags = encontrarTagsDeEvento();
+        String lista = "";
+        
+        for(int i=0; i<listaTags.size(); i++){
+            lista = lista + listaTags.get(i).getNombre() + ", ";
+        }
+        
+        tagsEvento = lista;
     }
     
     public List<Tag> encontrarTagsDeUsuario() {
@@ -568,6 +634,8 @@ public class DiarioSurBean implements Serializable {
             } 
         }
         
+        crearNotificacion("Tus tags se han añadido con exito!", usuario);
+        
         irPerfil();
     }
 
@@ -602,6 +670,8 @@ public class DiarioSurBean implements Serializable {
                     }
                 }
         }
+        
+        crearNotificacion("Has eliminado el tag con exito!", usuario);
 
         irPerfil();
     }
@@ -876,6 +946,7 @@ public class DiarioSurBean implements Serializable {
     public String irEditarEvento(Evento e) {
         evento = e;
         edit = 1;
+        mostrarTagsDeEvento();
         return "subirevento.xhtml";
     }
 
