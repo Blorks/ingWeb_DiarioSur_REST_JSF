@@ -74,7 +74,28 @@ public class DiarioSurBean implements Serializable {
     private String precioMax;
 
     private String usuarioFoto;
+    
+    private String puntuacion_evId = "";
+    private String puntuacion = "";
 
+    public String getPuntuacion_evId() {
+        return puntuacion_evId;
+    }
+
+    public void setPuntuacion_evId(String puntuacion_evId) {
+        this.puntuacion_evId = puntuacion_evId;
+    }
+
+    public String getPuntuacion() {
+        return puntuacion;
+    }
+
+    public void setPuntuacion(String puntuacion) {
+        this.puntuacion = puntuacion;
+    }
+
+    
+    
     public void rrssLogin() {
         try {
             FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -1265,10 +1286,11 @@ public class DiarioSurBean implements Serializable {
     }
 
     //METODOS REFERENTES A LAS PUNTUACIONES
-    public void actualizarPuntuacion(double punto, Evento ev) {
+    public void actualizarPuntuacion(String punto, String evId) {
+        Evento ev = encontrarEventoID(evId);
         clientePuntuacion cliente = new clientePuntuacion();
         Response r = cliente.encontrarPuntuacionesDeEventoYUsuario_XML(Response.class, ev.getId().toString(), usuario.getId().toString());
-
+        
         if (r.getStatus() == 200) {
             GenericType<List<Puntuacion>> genericType = new GenericType<List<Puntuacion>>() {
             };
@@ -1276,20 +1298,34 @@ public class DiarioSurBean implements Serializable {
             Puntuacion pt = new Puntuacion();
 
             if (puntuacion.isEmpty()) {
-                pt.setPuntuacion(punto);
+                pt.setPuntuacion(Double.parseDouble(punto));
                 pt.setEventoId(ev);
                 pt.setUsuarioId(usuario);
 
                 cliente.create_XML(pt);
             } else {
                 pt = puntuacion.get(0);
-                pt.setPuntuacion(punto);
+                pt.setPuntuacion(Double.parseDouble(punto));
 
                 cliente.edit_XML(pt, pt.getId().toString());
             }
         }
     }
 
+    private Evento encontrarEventoID(String id){
+        clienteEventos cliente = new clienteEventos();
+        Response r = cliente.encontrarEventoByID_XML(Response.class, String.valueOf(id));
+
+        if (r.getStatus() == 200) {
+            GenericType<List<Evento>> genericType = new GenericType<List<Evento>>() {
+            };
+            List<Evento> eventos = r.readEntity(genericType);
+            Evento e = eventos.get(0);
+            return e;
+        }
+        return null;
+    }
+    
     public double mostrarPuntuacionMedia(Evento ev) {
         clientePuntuacion cliente = new clientePuntuacion();
         Response r = cliente.encontrarPuntuacionesDeEvento_XML(Response.class, ev.getId().toString());
