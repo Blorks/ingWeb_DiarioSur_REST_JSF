@@ -938,7 +938,9 @@ public class DiarioSurBean implements Serializable {
             Fileev f = new Fileev();
             f.setId(0);
             f.setUrl("http://localhost:54747/ingWeb_DiarioSur_REST_JSF/faces/resources/images/user.png");
-            evento.getUsuarioId().setFileevId(f);
+            Usuario user = evento.getUsuarioId();
+            user.setFileevId(f);
+            evento.setUsuarioId(user);
         }
         return "evento.xhtml";
     }

@@ -61,7 +61,8 @@
 
                             <script type="text/javascript">
                                 $(document).ready(function () {
-                                    var tag = "#{diarioSurBean.encontrarUnTagsDeEvento().nombre}";
+                                    var tag = "#{diarioSurBean.encontrarTagsDeEvento().isEmpty()? '':diarioSurBean.encontrarTagsDeEvento().get(0).getNombre()}";
+                                    
                                     var latitud = $('input[id$="latitudOculta"]').val();
                                     var longitud = $('input[id$="longitudOculta"]').val();
                                     var direccionFisica = $('input[id$="direccionOculta"]').val();
@@ -122,9 +123,10 @@
 
 
                                     function mostrarFotos(flickr) {
+                                        console.log(flickr);
                                         for (var i = 0; i < flickr.photos.photo.length; i++) {
-                                            foto = flickr.photos.photo[i];
-                                            url = "http://www.flickr.com/photos/" + foto.owner + "/" + foto.id;
+                                            var foto = flickr.photos.photo[i];
+                                            var url = "http://www.flickr.com/photos/" + foto.owner + "/" + foto.id;
                                             $("#banner_tag").attr("src",foto.url_m);
                                         }
                                     }
@@ -147,10 +149,12 @@
                             <div class="row side">
                                 <small>
                                     <div class="statistics">
+                                        <!--
                                         <span class="label label-default">Visitas 2550</span>
                                         <span class="label label-default">Comentarios 15</span>
                                         <span class="label label-default">Compartido 50 veces</span>
                                         <span class="label label-default">Me gusta 20</span>
+                                        -->
                                     </div>
                                 </small>
                             </div>
