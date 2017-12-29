@@ -812,7 +812,7 @@ public class DiarioSurBean implements Serializable {
             evento.setDescripcion("");
         }
 
-        return "subirevento.xhtml";
+        return "subirevento";
     }
 
     public String irAnadirTagsEvento() {

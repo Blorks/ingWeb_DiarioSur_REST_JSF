@@ -36,7 +36,9 @@
                     </div>
                     <ul class="nav navbar-nav flex-item hidden-xs ">
                         <c:if test="#{!diarioSurBean.isLogin()}">
-                            <li><a href="#{diarioSurBean.irCrearEvento()}"><i class="glyphicon glyphicon-open"></i> Crear evento</a></li>
+                            <li>
+                                <h:link outcome="#{diarioSurBean.irCrearEvento()}" ><i class="glyphicon glyphicon-open"></i> Crear evento</h:link>
+                            </li>
                         </c:if>
                         <!--    
                                                         Log in/out
